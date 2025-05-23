@@ -66,7 +66,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             descriptionShortTextView.setVisibility(View.VISIBLE);
             expandDescriptionTextView.setVisibility(View.VISIBLE);
 
-            // Полное описание с кликабельной надписью "свернуть"
+
             String fullDescriptionWithCollapse = description + " свернуть";
             SpannableString spannableDescription = new SpannableString(fullDescriptionWithCollapse);
             ClickableSpan collapseSpan = new ClickableSpan() {

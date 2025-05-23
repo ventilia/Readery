@@ -9,15 +9,15 @@ public class Book {
     private String title;
     private String author;
     private String coverUrl;
-    private List<String> photoUrls; // Список URL или закодированных изображений
+    private List<String> photoUrls;
     private String description;
     private double price;
     private double discount;
 
-    // Конструктор без параметров для Firestore
+    //  для firestore
     public Book() {}
 
-    // Конструктор с параметрами
+
     public Book(String id, String title, String author, String coverUrl, List<String> photoUrls,
                 String description, double price, double discount) {
         this.id = id;
