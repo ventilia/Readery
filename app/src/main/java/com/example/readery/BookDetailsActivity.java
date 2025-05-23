@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
+import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class BookDetailsActivity extends AppCompatActivity {
     private ViewPager photoViewPager;
-    private TextView titleTextView, authorTextView, descriptionTextView, priceTextView;
+    private TextView titleTextView, authorTextView, descriptionShortTextView, expandDescriptionTextView, descriptionFullTextView, priceTextView;
     private FirebaseFirestore db;
 
     @Override
@@ -28,7 +29,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         photoViewPager = findViewById(R.id.photo_viewpager);
         titleTextView = findViewById(R.id.book_title);
         authorTextView = findViewById(R.id.book_author);
-        descriptionTextView = findViewById(R.id.book_description);
+        descriptionShortTextView = findViewById(R.id.book_description_short);
+        expandDescriptionTextView = findViewById(R.id.expand_description);
+        descriptionFullTextView = findViewById(R.id.book_description_full);
         priceTextView = findViewById(R.id.book_price);
 
         loadBookData(bookId);
@@ -51,7 +54,28 @@ public class BookDetailsActivity extends AppCompatActivity {
     private void displayBookDetails(Book book) {
         titleTextView.setText(book.getTitle());
         authorTextView.setText(book.getAuthor());
-        descriptionTextView.setText(book.getDescription() != null ? book.getDescription() : "Описание отсутствует");
+
+        String description = book.getDescription() != null ? book.getDescription() : "Описание отсутствует";
+        String[] words = description.split("\\s+");
+        if (words.length > 50) {
+            String shortDescription = String.join(" ", java.util.Arrays.copyOfRange(words, 0, 50)) + "...";
+            descriptionShortTextView.setText(shortDescription);
+            descriptionShortTextView.setVisibility(View.VISIBLE);
+            expandDescriptionTextView.setVisibility(View.VISIBLE);
+            descriptionFullTextView.setText(description);
+            descriptionFullTextView.setVisibility(View.GONE);
+
+            expandDescriptionTextView.setOnClickListener(v -> {
+                descriptionShortTextView.setVisibility(View.GONE);
+                expandDescriptionTextView.setVisibility(View.GONE);
+                descriptionFullTextView.setVisibility(View.VISIBLE);
+            });
+        } else {
+            descriptionFullTextView.setText(description);
+            descriptionFullTextView.setVisibility(View.VISIBLE);
+            descriptionShortTextView.setVisibility(View.GONE);
+            expandDescriptionTextView.setVisibility(View.GONE);
+        }
 
         List<String> photos = new ArrayList<>();
         if (book.getCoverUrl() != null) {

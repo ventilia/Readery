@@ -11,10 +11,9 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/photo_viewpager"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/book_title"
@@ -32,12 +31,32 @@
             android:textColor="#757575" />
 
         <TextView
-            android:id="@+id/book_description"
+            android:id="@+id/book_description_short"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginTop="8dp"
-            android:textColor="#424242" />
+            android:textColor="#424242"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/expand_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="развернуть"
+            android:textSize="16sp"
+            android:textColor="#0000FF"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/book_description_full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:textColor="#424242"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/book_price"
