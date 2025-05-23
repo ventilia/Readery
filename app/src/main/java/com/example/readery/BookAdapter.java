@@ -1,5 +1,8 @@
 package com.example.readery;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private List<Book> bookList;
     private OnBookClickListener listener;
 
-    // Интерфейс для обработки кликов
     public interface OnBookClickListener {
         void onBookClick(Book book);
     }
@@ -36,10 +38,22 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         Book book = bookList.get(position);
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
-        holder.price.setText(String.format("%.2f ₽", book.getPrice()));
+
+        double price = book.getPrice();
+        double discount = book.getDiscount();
+        if (discount > 0) {
+            double discountedPrice = price - (price * discount / 100);
+            String originalPriceText = String.format("%.2f ₽", price);
+            String discountedPriceText = String.format("%.2f ₽", discountedPrice);
+            SpannableString spannable = new SpannableString(originalPriceText + " " + discountedPriceText);
+            spannable.setSpan(new StrikethroughSpan(), 0, originalPriceText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.price.setText(spannable);
+        } else {
+            holder.price.setText(String.format("%.2f ₽", price));
+        }
+
         Glide.with(holder.itemView.getContext()).load(book.getCoverUrl()).into(holder.cover);
 
-        // Обработка клика по карточке
         holder.itemView.setOnClickListener(v -> listener.onBookClick(book));
     }
 
