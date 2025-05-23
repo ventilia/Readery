@@ -29,6 +29,10 @@
             android:name=".LibraryActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".BookDetailsActivity"
+            android:exported="false" />
+
 
 
     </application>

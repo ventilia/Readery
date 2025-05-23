@@ -2,23 +2,32 @@ package com.example.readery;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.util.List;
+
 public class Book {
     private String id;
     private String title;
     private String author;
     private String coverUrl;
+    private List<String> photoUrls; // Список URL или закодированных изображений
+    private String description;
     private double price;
+    private double discount;
 
-    // конструктор без параметров для firestore
+    // Конструктор без параметров для Firestore
     public Book() {}
 
-    // конструктор с параметрами
-    public Book(String id, String title, String author, String coverUrl, double price) {
+    // Конструктор с параметрами
+    public Book(String id, String title, String author, String coverUrl, List<String> photoUrls,
+                String description, double price, double discount) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.coverUrl = coverUrl;
+        this.photoUrls = photoUrls;
+        this.description = description;
         this.price = price;
+        this.discount = discount;
     }
 
     @Exclude
@@ -55,11 +64,35 @@ public class Book {
         this.coverUrl = coverUrl;
     }
 
+    public List<String> getPhotoUrls() {
+        return photoUrls;
+    }
+
+    public void setPhotoUrls(List<String> photoUrls) {
+        this.photoUrls = photoUrls;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getPrice() {
         return price;
     }
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 }

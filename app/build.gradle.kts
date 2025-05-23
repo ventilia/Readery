@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.viewpager:viewpager:1.0.0")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
