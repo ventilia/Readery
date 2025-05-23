@@ -1,5 +1,7 @@
 package com.example.readery;
 
+import com.google.firebase.firestore.Exclude;
+
 public class Book {
     private String id;
     private String title;
@@ -7,10 +9,10 @@ public class Book {
     private String coverUrl;
     private double price;
 
-    // Конструктор без параметров для Firestore
+    // конструктор без параметров для firestore
     public Book() {}
 
-    // Конструктор с параметрами
+    // конструктор с параметрами
     public Book(String id, String title, String author, String coverUrl, double price) {
         this.id = id;
         this.title = title;
@@ -19,13 +21,45 @@ public class Book {
         this.price = price;
     }
 
-    // Геттеры
-    public String getId() { return id; }
-    public String getTitle() { return title; }
-    public String getAuthor() { return author; }
-    public String getCoverUrl() { return coverUrl; }
-    public double getPrice() { return price; }
+    @Exclude
+    public String getId() {
+        return id;
+    }
+
+    @Exclude
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
