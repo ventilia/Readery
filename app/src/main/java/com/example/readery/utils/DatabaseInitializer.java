@@ -27,7 +27,7 @@ public class DatabaseInitializer {
                 Book book1 = new Book("Sample Book", "John Doe");
                 book1.setDescription("A sample book for testing.");
                 book1.setPdfPath("master_and_margarita.pdf");
-                book1.setCoverImagePath("cover1.jpg");
+                book1.setCoverImagePath("assets/cover1.jpg");
                 long book1Id = db.bookDao().insert(book1);
 
                 // вставка связей книга-тег
