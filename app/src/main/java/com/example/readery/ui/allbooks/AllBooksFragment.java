@@ -1,5 +1,6 @@
 package com.example.readery.ui.allbooks;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -7,7 +8,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,6 +27,8 @@ public class AllBooksFragment extends Fragment {
     private AllBooksViewModel viewModel;
     private RecyclerView recyclerView;
     private BookAdapter adapter;
+    private String currentFilterType = "title"; // По умолчанию фильтр по названию
+    private String currentFilterOrder = "ASC"; // По умолчанию прямой порядок
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,22 +37,16 @@ public class AllBooksFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recycler_view_all_books);
 
-        // 1) Получаем ширину экрана в пикселях
+        // Настройка GridLayoutManager с динамическим количеством колонок
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int screenWidthPx = metrics.widthPixels;
-
-        // 2) Задаём минимальную ширину элемента в dp и переводим в px
         final float MIN_ITEM_WIDTH_DP = 120f;
         int minItemWidthPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 MIN_ITEM_WIDTH_DP,
                 metrics
         );
-
-        // 3) Считаем spanCount: экранная ширина / минимальная ширина элемента
         int spanCount = Math.max(1, screenWidthPx / minItemWidthPx);
-
-        // 4) Устанавливаем GridLayoutManager с динамическим количеством колонок
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
 
         adapter = new BookAdapter(book -> {
@@ -72,10 +71,36 @@ public class AllBooksFragment extends Fragment {
             }
         });
 
+        ImageButton filterButton = root.findViewById(R.id.filter_button);
+        filterButton.setOnClickListener(v -> showFilterDialog());
+
         viewModel.getSearchedBooks().observe(getViewLifecycleOwner(), books -> {
             adapter.setBooks(books);
         });
 
         return root;
+    }
+
+    private void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Фильтр");
+
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_filter, null);
+        builder.setView(dialogView);
+
+        Spinner filterTypeSpinner = dialogView.findViewById(R.id.filter_type_spinner);
+        Spinner filterOrderSpinner = dialogView.findViewById(R.id.filter_order_spinner);
+
+        builder.setPositiveButton("Применить", (dialog, which) -> {
+            String filterType = filterTypeSpinner.getSelectedItem().toString();
+            String filterOrder = filterOrderSpinner.getSelectedItem().toString();
+            currentFilterType = filterType.equals("Название") ? "title" : "author";
+            currentFilterOrder = filterOrder.equals("А-Я") ? "ASC" : "DESC";
+            viewModel.setFilter(currentFilterType, currentFilterOrder);
+        });
+
+        builder.setNegativeButton("Отмена", null);
+
+        builder.show();
     }
 }

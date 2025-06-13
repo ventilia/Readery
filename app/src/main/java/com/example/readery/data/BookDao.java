@@ -12,16 +12,20 @@ public interface BookDao {
     LiveData<List<Book>> getAllBooks();
 
     @Query("SELECT * FROM books WHERE id = :bookId")
-    LiveData<Book> getBookById(long bookId); // изменен на long
+    LiveData<Book> getBookById(long bookId);
 
     @Query("SELECT b.* FROM books b INNER JOIN book_tags bt ON b.id = bt.bookId WHERE bt.tagId = :tagId")
-    LiveData<List<Book>> getBooksByTag(long tagId); // изменен на long
+    LiveData<List<Book>> getBooksByTag(long tagId);
 
-    @Query("SELECT * FROM books WHERE title LIKE :query OR author LIKE :query")
-    LiveData<List<Book>> searchBooks(String query);
+    @Query("SELECT * FROM books WHERE title LIKE :query OR author LIKE :query ORDER BY " +
+            "CASE WHEN :filterType = 'title' AND :filterOrder = 'ASC' THEN title END ASC, " +
+            "CASE WHEN :filterType = 'title' AND :filterOrder = 'DESC' THEN title END DESC, " +
+            "CASE WHEN :filterType = 'author' AND :filterOrder = 'ASC' THEN author END ASC, " +
+            "CASE WHEN :filterType = 'author' AND :filterOrder = 'DESC' THEN author END DESC")
+    LiveData<List<Book>> searchBooks(String query, String filterType, String filterOrder);
 
     @Insert
-    long insert(Book book); // изменен на long для возврата id
+    long insert(Book book);
 
     @Query("SELECT COUNT(*) FROM books")
     int getBookCount();
