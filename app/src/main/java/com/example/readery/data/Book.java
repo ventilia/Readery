@@ -2,24 +2,25 @@ package com.example.readery.data;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import java.util.List;
 
 @Entity(tableName = "books")
 public class Book {
     @PrimaryKey(autoGenerate = true)
-    private long id; // изменен на long
+    private long id;
     private String title;
     private String author;
-    private String description;      // добавлено
-    private String pdfPath;          // добавлено
-    private String coverImagePath;   // добавлено
+    private String description;
+    private String pdfPath;
+    private String coverImagePath;
+    private List<String> additionalImages;
 
-    // конструктор
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
     }
 
-    // геттеры и сеттеры
+    // Геттеры и сеттеры
     public long getId() {
         return id;
     }
@@ -66,5 +67,13 @@ public class Book {
 
     public void setCoverImagePath(String coverImagePath) {
         this.coverImagePath = coverImagePath;
+    }
+
+    public List<String> getAdditionalImages() {
+        return additionalImages;
+    }
+
+    public void setAdditionalImages(List<String> additionalImages) {
+        this.additionalImages = additionalImages;
     }
 }
