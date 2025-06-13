@@ -2,15 +2,19 @@ package com.example.readery.ui.allbooks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.readery.R;
 import com.example.readery.ui.BookDetailsActivity;
 import com.example.readery.ui.adapters.BookAdapter;
@@ -27,10 +31,28 @@ public class AllBooksFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_all_books, container, false);
 
         recyclerView = root.findViewById(R.id.recycler_view_all_books);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // 1) Получаем ширину экрана в пикселях
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenWidthPx = metrics.widthPixels;
+
+        // 2) Задаём минимальную ширину элемента в dp и переводим в px
+        final float MIN_ITEM_WIDTH_DP = 120f;
+        int minItemWidthPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                MIN_ITEM_WIDTH_DP,
+                metrics
+        );
+
+        // 3) Считаем spanCount: экранная ширина / минимальная ширина элемента
+        int spanCount = Math.max(1, screenWidthPx / minItemWidthPx);
+
+        // 4) Устанавливаем GridLayoutManager с динамическим количеством колонок
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
+
         adapter = new BookAdapter(book -> {
             Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
-            intent.putExtra("bookId", book.getId()); // используем геттер и long
+            intent.putExtra("bookId", book.getId());
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
