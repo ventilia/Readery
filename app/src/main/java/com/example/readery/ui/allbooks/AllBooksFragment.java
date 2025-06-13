@@ -53,7 +53,7 @@ public class AllBooksFragment extends Fragment {
             Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
             intent.putExtra("bookId", book.getId());
             startActivity(intent);
-        });
+        }, requireContext());
         recyclerView.setAdapter(adapter);
 
         SearchView searchView = root.findViewById(R.id.search_view);

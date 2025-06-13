@@ -1,5 +1,6 @@
 package com.example.readery.ui.home;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,12 @@ import com.example.readery.ui.adapters.BookAdapter;
 import java.util.List;
 
 public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder> {
+    private Context context;
     private List<Section> sections;
     private BookAdapter.OnBookClickListener bookClickListener;
 
-    public SectionAdapter(List<Section> sections, BookAdapter.OnBookClickListener listener) {
+    public SectionAdapter(Context context, List<Section> sections, BookAdapter.OnBookClickListener listener) {
+        this.context = context;
         this.sections = sections;
         this.bookClickListener = listener;
     }
@@ -35,7 +38,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
         Section section = sections.get(position);
         holder.title.setText(section.title);
-        BookAdapter bookAdapter = new BookAdapter(bookClickListener);
+        BookAdapter bookAdapter = new BookAdapter(bookClickListener, context);
         bookAdapter.setBooks(section.books);
         holder.recyclerView.setAdapter(bookAdapter);
     }

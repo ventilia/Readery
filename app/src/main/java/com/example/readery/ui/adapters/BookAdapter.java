@@ -1,8 +1,12 @@
 package com.example.readery.ui.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,27 +17,29 @@ import com.example.readery.data.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Адаптер для отображения списка книг в RecyclerView.
- */
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
+
     private List<Book> books = new ArrayList<>();
     private OnBookClickListener listener;
+    private Animation scaleDown;
+    private Animation scaleUp;
+    private Animation pulse;
 
-    /**
-     * Интерфейс для обработки кликов по элементам списка.
-     */
+    // Интерфейс для обработки кликов
     public interface OnBookClickListener {
         void onBookClick(Book book);
     }
 
-    public BookAdapter(OnBookClickListener listener) {
+    // Конструктор адаптера
+    public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
+        // Загрузка анимаций
+        scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
+        scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+        pulse = AnimationUtils.loadAnimation(context, R.anim.hold_pulse);
     }
 
-    /**
-     * Обновляет список книг и уведомляет адаптер об изменениях.
-     */
+    // Установка списка книг
     public void setBooks(List<Book> books) {
         this.books = books;
         notifyDataSetChanged();
@@ -52,18 +58,48 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.title.setText(book.getTitle());
         holder.author.setText(book.getAuthor());
 
-        // Загружаем обложку книги с помощью Glide
         String coverPath = book.getCoverImagePath();
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
-                    .load("file:///android_asset/" + coverPath) // Путь к файлу в assets
-                    .placeholder(R.drawable.default_cover)      // Заглушка во время загрузки
-                    .error(R.drawable.error_cover)              // Изображение при ошибке
-                    .into(holder.cover);                        // Целевой ImageView
+                    .load("file:///android_asset/" + coverPath)
+                    .placeholder(R.drawable.default_cover)
+                    .error(R.drawable.error_cover)
+                    .into(holder.cover);
         }
 
-        // Устанавливаем обработчик клика
-        holder.itemView.setOnClickListener(v -> listener.onBookClick(book));
+        // Обработка касаний
+        holder.itemView.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.clearAnimation();
+                    v.startAnimation(scaleDown);
+                    scaleDown.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            v.startAnimation(pulse);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    v.clearAnimation();
+                    v.startAnimation(scaleUp);
+                    listener.onBookClick(book);
+                    break;
+
+                case MotionEvent.ACTION_CANCEL:
+                    v.clearAnimation();
+                    v.startAnimation(scaleUp);
+                    break;
+            }
+            return true;
+        });
     }
 
     @Override
@@ -71,9 +107,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return books.size();
     }
 
-    /**
-     * ViewHolder для хранения элементов интерфейса одного элемента списка.
-     */
+    // Внутренний класс ViewHolder
     static class BookViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView author;

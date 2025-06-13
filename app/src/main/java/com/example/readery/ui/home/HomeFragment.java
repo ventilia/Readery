@@ -28,34 +28,26 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // инициируем viewmodel
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        // подключаем layout для фрагмента
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // настраиваем recyclerview
         recyclerView = root.findViewById(R.id.recycler_view_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // создаем адаптер с обработчиком клика по книге
-        adapter = new SectionAdapter(sections, book -> {
+        adapter = new SectionAdapter(requireContext(), sections, book -> {
             Intent intent = new Intent(getActivity(), BookDetailsActivity.class);
-            // используем геттер getId() вместо прямого доступа к приватному полю id
             intent.putExtra("bookId", book.getId());
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
 
-        // наблюдаем за списком новых книг
         homeViewModel.getNewBooks().observe(getViewLifecycleOwner(), books -> {
             updateSection("New", books);
         });
 
-        // наблюдаем за списком популярных книг
         homeViewModel.getPopularBooks().observe(getViewLifecycleOwner(), books -> {
             updateSection("Popular", books);
         });
 
-        // наблюдаем за списком книг, выбранных редактором
         homeViewModel.getEditorsChoiceBooks().observe(getViewLifecycleOwner(), books -> {
             updateSection("Editor's Choice", books);
         });
@@ -63,7 +55,6 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    // обновляем или добавляем секцию в список
     private void updateSection(String title, List<Book> books) {
         for (int i = 0; i < sections.size(); i++) {
             if (sections.get(i).title.equals(title)) {
