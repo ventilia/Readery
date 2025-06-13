@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Readery</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_all_books">All Books</string>
+    <string name="search_books">Search books...</string>
+    <string name="book_cover">Book cover</string>
+</resources>
