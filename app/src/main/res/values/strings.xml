@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Readery</string>
 
@@ -7,6 +8,11 @@
     <string name="book_cover">Book cover</string>
 
     <string name="filter_books">Фильтровать книги</string>
+
+    <!-- Добавленные теги -->
+    <string name="tag_new">Новые</string>
+    <string name="tag_popular">Популярные</string>
+    <string name="tag_editors_choice">Выбор редакции</string>
 
     <string-array name="filter_types">
         <item>Название</item>
