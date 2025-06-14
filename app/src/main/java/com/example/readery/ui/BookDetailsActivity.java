@@ -1,8 +1,6 @@
 package com.example.readery.ui;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,8 +9,8 @@ import com.example.readery.R;
 import com.example.readery.data.Book;
 import com.example.readery.utils.ImagePagerAdapter;
 import com.example.readery.viewmodel.BookDetailsViewModel;
+import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_details);
+        setContentView(R.layout.activity_book_details); // Используем обновленный layout
 
         // Получаем bookId из Intent, переданного из фрагмента
         long bookId = getIntent().getLongExtra("bookId", -1);
@@ -49,8 +47,14 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView authorView = findViewById(R.id.book_author);
                 authorView.setText(book.getAuthor());
 
+                // Установка полного описания книги
+                TextView descriptionView = findViewById(R.id.book_description);
+                descriptionView.setText(book.getDescription());
+
                 // Настройка ViewPager для отображения изображений (обложка + дополнительные)
                 ViewPager imagePager = findViewById(R.id.image_pager);
+                TabLayout tabLayout = findViewById(R.id.tab_layout);
+
                 List<String> allImages = new ArrayList<>();
                 if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
                     allImages.add(book.getCoverImagePath());
@@ -61,46 +65,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
 
-                // Настройка описания с возможностью разворачивания и сворачивания
-                TextView descriptionView = findViewById(R.id.book_description);
-                Button expandButton = findViewById(R.id.expand_button);
-                Button collapseButton = findViewById(R.id.collapse_button);
-
-                String fullDescription = book.getDescription();
-                String[] words = fullDescription.split("\\s+");
-                if (words.length > 50) {
-                    // Если описание длиннее 50 слов, показываем короткую версию
-                    String shortDescription = String.join(" ", Arrays.copyOfRange(words, 0, 50)) + "...";
-                    descriptionView.setText(shortDescription);
-                    descriptionView.setMaxLines(3); // Ограничиваем до 3 строк
-                    expandButton.setVisibility(View.VISIBLE); // Показываем кнопку "Развернуть"
-                    collapseButton.setVisibility(View.GONE);  // Скрываем кнопку "Свернуть"
-                } else {
-                    // Если описание короткое, показываем полную версию
-                    descriptionView.setText(fullDescription);
-                    descriptionView.setMaxLines(Integer.MAX_VALUE); // Без ограничения строк
-                    expandButton.setVisibility(View.GONE); // Скрываем обе кнопки
-                    collapseButton.setVisibility(View.GONE);
-                }
-
-                // Обработчик нажатия на кнопку "Развернуть"
-                expandButton.setOnClickListener(v -> {
-                    descriptionView.setText(fullDescription);
-                    descriptionView.setMaxLines(Integer.MAX_VALUE); // Показываем весь текст
-                    expandButton.setVisibility(View.GONE);
-                    collapseButton.setVisibility(View.VISIBLE);
-                    descriptionView.animate().alpha(1f).setDuration(300).start(); // Анимация
-                });
-
-                // Обработчик нажатия на кнопку "Свернуть"
-                collapseButton.setOnClickListener(v -> {
-                    String shortDescription = String.join(" ", Arrays.copyOfRange(words, 0, 50)) + "...";
-                    descriptionView.setText(shortDescription);
-                    descriptionView.setMaxLines(3); // Сворачиваем до 3 строк
-                    collapseButton.setVisibility(View.GONE);
-                    expandButton.setVisibility(View.VISIBLE);
-                    descriptionView.animate().alpha(1f).setDuration(300).start(); // Анимация
-                });
+                // Связываем TabLayout с ViewPager для отображения индикаторов
+                tabLayout.setupWithViewPager(imagePager);
             }
         });
     }

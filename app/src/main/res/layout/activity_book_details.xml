@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/image_pager"
-        android:layout_width="match_parent"
-        android:layout_height="500dp" />
-
-    <TextView
-        android:id="@+id/book_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/book_author"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/image_pager"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" />
 
-    <TextView
-        android:id="@+id/book_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="3"
-        android:ellipsize="end"
-        android:textSize="14sp" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="#000000"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed"
+            app:tabGravity="center" />
 
-    <Button
-        android:id="@+id/expand_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Развернуть"
-        android:textColor="#0000FF"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/book_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/collapse_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Свернуть"
-        android:textColor="#0000FF"
-        android:visibility="gone" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/book_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/book_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+</ScrollView>
