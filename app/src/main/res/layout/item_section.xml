@@ -6,6 +6,7 @@
     android:padding="8dp">
 
     <TextView
+        android:fontFamily="@font/bookerly"
         android:id="@+id/section_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

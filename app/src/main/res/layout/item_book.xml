@@ -24,6 +24,7 @@
             android:contentDescription="Обложка книги" />
 
         <TextView
+            android:fontFamily="@font/bookerly"
             android:id="@+id/book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
             android:textColor="@color/black" />
 
         <TextView
+            android:fontFamily="@font/bookerly"
             android:id="@+id/book_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

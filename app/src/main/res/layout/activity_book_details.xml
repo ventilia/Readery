@@ -20,6 +20,7 @@
 
 
         <TextView
+            android:fontFamily="@font/bookerly"
             android:id="@+id/book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +31,7 @@
             android:gravity="center" />
 
         <TextView
+            android:fontFamily="@font/bookerly"
             android:id="@+id/book_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +39,7 @@
             android:textColor="@color/gray" />
 
         <TextView
+            android:fontFamily="@font/bookerly"
             android:id="@+id/book_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
