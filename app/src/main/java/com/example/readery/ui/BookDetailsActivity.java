@@ -44,7 +44,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                 // Настройка ViewPager и TabLayout
                 ViewPager imagePager = findViewById(R.id.image_pager);
-                TabLayout tabLayout = findViewById(R.id.tab_layout);
+
 
                 List<String> allImages = new ArrayList<>();
                 // Используем изображение высокого разрешения для главной фотографии
@@ -60,12 +60,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
 
-                // Настройка TabLayout для улучшенной видимости индикаторов
-                tabLayout.setupWithViewPager(imagePager);
-                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-                tabLayout.setTabIndicatorFullWidth(false); // Точки вместо полосок
-                tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.black));
-                tabLayout.setTabTextColors(getResources().getColor(R.color.gray), getResources().getColor(R.color.black));
+
             }
         });
     }
