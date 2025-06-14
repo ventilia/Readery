@@ -23,7 +23,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private OnBookClickListener listener;
     private Animation scaleDown;
     private Animation scaleUp;
-    private Animation pulse;
 
     // Интерфейс для обработки кликов
     public interface OnBookClickListener {
@@ -33,10 +32,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     // Конструктор адаптера
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
-        // Загрузка анимаций
         scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
         scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
-        pulse = AnimationUtils.loadAnimation(context, R.anim.hold_pulse);
     }
 
     // Установка списка книг
@@ -67,32 +64,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .into(holder.cover);
         }
 
-        // Обработка касаний
+        // Обработка касаний без пульсации
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     v.clearAnimation();
                     v.startAnimation(scaleDown);
-                    scaleDown.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {}
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            v.startAnimation(pulse);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {}
-                    });
                     break;
-
                 case MotionEvent.ACTION_UP:
                     v.clearAnimation();
                     v.startAnimation(scaleUp);
                     listener.onBookClick(book);
                     break;
-
                 case MotionEvent.ACTION_CANCEL:
                     v.clearAnimation();
                     v.startAnimation(scaleUp);

@@ -2,19 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/ivory">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <SearchView
             android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:queryHint="@string/search_books" />
+            android:queryHint="Поиск книг"
+            android:iconifiedByDefault="false"
+            android:background="@drawable/search_background"
+            android:searchIcon="@drawable/ic_search"
+            android:queryBackground="@android:color/transparent"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black" />
 
         <ImageButton
             android:id="@+id/filter_button"
@@ -22,7 +30,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_filter"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/filter_books" />
+            android:contentDescription="Фильтр книг" />
 
     </LinearLayout>
 
