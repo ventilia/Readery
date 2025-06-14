@@ -9,12 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:gravity="center_horizontal">  <!-- центрируем всех детей по горизонтали -->
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/image_pager"
-            android:layout_width="match_parent"
-            android:layout_height="500dp" />
+            android:layout_width="350dp"
+            android:layout_height="500dp"
+            android:layout_gravity="center_horizontal" />  <!-- на всякий случай -->
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -22,13 +24,15 @@
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/black"
             app:tabIndicatorHeight="4dp"
-            app:tabMode="fixed"
-            app:tabGravity="center" />
+            app:tabMode="scrollable"
+            app:tabGravity="center"
+            app:tabIndicatorFullWidth="false" />
 
         <TextView
             android:id="@+id/book_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black" />

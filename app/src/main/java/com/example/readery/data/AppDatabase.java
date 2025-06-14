@@ -6,7 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Book.class, Tag.class, BookTag.class}, version = 2, exportSchema = false)
+@Database(entities = {Book.class, Tag.class, BookTag.class}, version = 3, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract BookDao bookDao();
@@ -19,7 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "readery-database")
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration() // Разрушающая миграция для простоты
                     .build();
         }
         return instance;

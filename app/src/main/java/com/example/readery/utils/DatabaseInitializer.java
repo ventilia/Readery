@@ -15,7 +15,7 @@ public class DatabaseInitializer {
             AppDatabase db = AppDatabase.getInstance(context);
 
             if (db.bookDao().getBookCount() == 0) {
-                // 1) Создаём теги
+                // Создание тегов
                 Tag newTag = new Tag("New");
                 long newTagId = db.tagDao().insert(newTag);
 
@@ -25,14 +25,14 @@ public class DatabaseInitializer {
                 Tag editorsTag = new Tag("Editor's Choice");
                 long editorsTagId = db.tagDao().insert(editorsTag);
 
-                // 2) Описание для всех
                 String genericDesc = "Классическое произведение мировой литературы.";
 
                 // ==== NEW (5 книг) ====
                 Book b1 = new Book("Гордость и предубеждение", "Джейн Остин");
                 b1.setDescription("Роман о любви и социальных нормах в Англии 19 века.");
                 b1.setPdfPath("books/pride_and_prejudice/book.pdf");
-                b1.setCoverImagePath("books/pride_and_prejudice/cover.jpg");
+                b1.setCoverImagePath("books/pride_and_prejudice/cover_low_res.jpg");
+                b1.setHighResCoverImagePath("books/pride_and_prejudice/cover_high_res.jpg");
                 b1.setAdditionalImages(Arrays.asList(
                         "books/pride_and_prejudice/additional1.jpg",
                         "books/pride_and_prejudice/additional2.jpg"
@@ -43,7 +43,8 @@ public class DatabaseInitializer {
                 Book b2 = new Book("Убить пересмешника", "Харпер Ли");
                 b2.setDescription("Роман о расовой несправедливости и взрослении на юге США.");
                 b2.setPdfPath("books/to_kill_a_mockingbird/book.pdf");
-                b2.setCoverImagePath("books/to_kill_a_mockingbird/cover.jpg");
+                b2.setCoverImagePath("books/to_kill_a_mockingbird/cover_low_res.jpg");
+                b2.setHighResCoverImagePath("books/to_kill_a_mockingbird/cover_high_res.jpg");
                 b2.setAdditionalImages(Arrays.asList(
                         "books/to_kill_a_mockingbird/additional1.jpg",
                         "books/to_kill_a_mockingbird/additional2.jpg"
@@ -52,9 +53,10 @@ public class DatabaseInitializer {
                 db.bookTagDao().insert(new BookTag(id2, newTagId));
 
                 Book b3 = new Book("1984", "Джордж Оруэлл");
-                b3.setDescription("Дистр 8ра089варп ла ла лалала ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала  ла ла ла ла ла ла ла ла ла ла ла лала");
+                b3.setDescription("Дистопический роман о тоталитарном обществе.");
                 b3.setPdfPath("books/1984/book.pdf");
-                b3.setCoverImagePath("books/1984/cover.jpg");
+                b3.setCoverImagePath("books/1984/cover_low_res.jpg");
+                b3.setHighResCoverImagePath("books/1984/cover_high_res.jpg");
                 b3.setAdditionalImages(Arrays.asList(
                         "books/1984/additional1.jpg",
                         "books/1984/additional2.jpg"
@@ -65,7 +67,8 @@ public class DatabaseInitializer {
                 Book b4 = new Book("Великий Гэтсби", "Фрэнсис Скотт Фицджеральд");
                 b4.setDescription("Роман о американской мечте и упадке в 1920-х годах.");
                 b4.setPdfPath("books/the_great_gatsby/book.pdf");
-                b4.setCoverImagePath("books/the_great_gatsby/cover.jpg");
+                b4.setCoverImagePath("books/the_great_gatsby/cover_low_res.jpg");
+                b4.setHighResCoverImagePath("books/the_great_gatsby/cover_high_res.jpg");
                 b4.setAdditionalImages(Arrays.asList(
                         "books/the_great_gatsby/additional1.jpg",
                         "books/the_great_gatsby/additional2.jpg"
@@ -76,7 +79,8 @@ public class DatabaseInitializer {
                 Book b5 = new Book("Моби Дик", "Герман Мелвилл");
                 b5.setDescription("Эпическая история о капитане Ахаве и его одержимости белым китом.");
                 b5.setPdfPath("books/moby_dick/book.pdf");
-                b5.setCoverImagePath("books/moby_dick/cover.jpg");
+                b5.setCoverImagePath("books/moby_dick/cover_low_res.jpg");
+                b5.setHighResCoverImagePath("books/moby_dick/cover_high_res.jpg");
                 b5.setAdditionalImages(Arrays.asList(
                         "books/moby_dick/additional1.jpg",
                         "books/moby_dick/additional2.jpg"
@@ -88,7 +92,8 @@ public class DatabaseInitializer {
                 Book b6 = new Book("Война и мир", "Лев Толстой");
                 b6.setDescription("Масштабный роман о русской жизни во времена наполеоновских войн.");
                 b6.setPdfPath("books/war_and_peace/book.pdf");
-                b6.setCoverImagePath("books/war_and_peace/cover.jpg");
+                b6.setCoverImagePath("books/war_and_peace/cover_low_res.jpg");
+                b6.setHighResCoverImagePath("books/war_and_peace/cover_high_res.jpg");
                 b6.setAdditionalImages(Arrays.asList(
                         "books/war_and_peace/additional1.jpg",
                         "books/war_and_peace/additional2.jpg"
@@ -99,7 +104,8 @@ public class DatabaseInitializer {
                 Book b7 = new Book("Над пропастью во ржи", "Джером Сэлинджер");
                 b7.setDescription("Роман о подростковом бунте и поиске себя.");
                 b7.setPdfPath("books/the_catcher_in_the_rye/book.pdf");
-                b7.setCoverImagePath("books/the_catcher_in_the_rye/cover.jpg");
+                        b7.setCoverImagePath("books/the_catcher_in_the_rye/cover_low_res.jpg");
+                b7.setHighResCoverImagePath("books/the_catcher_in_the_rye/cover_high_res.jpg");
                 b7.setAdditionalImages(Arrays.asList(
                         "books/the_catcher_in_the_rye/additional1.jpg",
                         "books/the_catcher_in_the_rye/additional2.jpg"
@@ -110,7 +116,8 @@ public class DatabaseInitializer {
                 Book b8 = new Book("Джейн Эйр", "Шарлотта Бронте");
                 b8.setDescription("Роман о сильной женщине и её борьбе за любовь и независимость.");
                 b8.setPdfPath("books/jane_eyre/book.pdf");
-                b8.setCoverImagePath("books/jane_eyre/cover.jpg");
+                b8.setCoverImagePath("books/jane_eyre/cover_low_res.jpg");
+                b8.setHighResCoverImagePath("books/jane_eyre/cover_high_res.jpg");
                 b8.setAdditionalImages(Arrays.asList(
                         "books/jane_eyre/additional1.jpg",
                         "books/jane_eyre/additional2.jpg"
@@ -121,7 +128,8 @@ public class DatabaseInitializer {
                 Book b9 = new Book("Преступление и наказание", "Фёдор Достоевский");
                 b9.setDescription("Психологический роман о вине и искуплении.");
                 b9.setPdfPath("books/crime_and_punishment/book.pdf");
-                b9.setCoverImagePath("books/crime_and_punishment/cover.jpg");
+                b9.setCoverImagePath("books/crime_and_punishment/cover_low_res.jpg");
+                b9.setHighResCoverImagePath("books/crime_and_punishment/cover_high_res.jpg");
                 b9.setAdditionalImages(Arrays.asList(
                         "books/crime_and_punishment/additional1.jpg",
                         "books/crime_and_punishment/additional2.jpg"
@@ -132,7 +140,8 @@ public class DatabaseInitializer {
                 Book b10 = new Book("Одиссея", "Гомер");
                 b10.setDescription("Эпическая поэма о приключениях Одиссея.");
                 b10.setPdfPath("books/the_odyssey/book.pdf");
-                b10.setCoverImagePath("books/the_odyssey/cover.jpg");
+                b10.setCoverImagePath("books/the_odyssey/cover_low_res.jpg");
+                b10.setHighResCoverImagePath("books/the_odyssey/cover_high_res.jpg");
                 b10.setAdditionalImages(Arrays.asList(
                         "books/the_odyssey/additional1.jpg",
                         "books/the_odyssey/additional2.jpg"
@@ -144,7 +153,8 @@ public class DatabaseInitializer {
                 Book e1 = new Book("О дивный новый мир", "Олдос Хаксли");
                 e1.setDescription(genericDesc);
                 e1.setPdfPath("books/brave_new_world/book.pdf");
-                e1.setCoverImagePath("books/brave_new_world/cover.jpg");
+                e1.setCoverImagePath("books/brave_new_world/cover_low_res.jpg");
+                e1.setHighResCoverImagePath("books/brave_new_world/cover_high_res.jpg");
                 e1.setAdditionalImages(Arrays.asList(
                         "books/brave_new_world/additional1.jpg",
                         "books/brave_new_world/additional2.jpg"
@@ -155,7 +165,8 @@ public class DatabaseInitializer {
                 Book e2 = new Book("Алая буква", "Натаниэль Готорн");
                 e2.setDescription(genericDesc);
                 e2.setPdfPath("books/the_scarlet_letter/book.pdf");
-                e2.setCoverImagePath("books/the_scarlet_letter/cover.jpg");
+                e2.setCoverImagePath("books/the_scarlet_letter/cover_low_res.jpg");
+                e2.setHighResCoverImagePath("books/the_scarlet_letter/cover_high_res.jpg");
                 e2.setAdditionalImages(Arrays.asList(
                         "books/the_scarlet_letter/additional1.jpg",
                         "books/the_scarlet_letter/additional2.jpg"
@@ -166,7 +177,8 @@ public class DatabaseInitializer {
                 Book e3 = new Book("Грозовой перевал", "Эмили Бронте");
                 e3.setDescription(genericDesc);
                 e3.setPdfPath("books/wuthering_heights/book.pdf");
-                e3.setCoverImagePath("books/wuthering_heights/cover.jpg");
+                e3.setCoverImagePath("books/wuthering_heights/cover_low_res.jpg");
+                e3.setHighResCoverImagePath("books/wuthering_heights/cover_high_res.jpg");
                 e3.setAdditionalImages(Arrays.asList(
                         "books/wuthering_heights/additional1.jpg",
                         "books/wuthering_heights/additional2.jpg"
@@ -177,7 +189,8 @@ public class DatabaseInitializer {
                 Book e4 = new Book("Илиада", "Гомер");
                 e4.setDescription(genericDesc);
                 e4.setPdfPath("books/the_iliad/book.pdf");
-                e4.setCoverImagePath("books/the_iliad/cover.jpg");
+                e4.setCoverImagePath("books/the_iliad/cover_low_res.jpg");
+                e4.setHighResCoverImagePath("books/the_iliad/cover_high_res.jpg");
                 e4.setAdditionalImages(Arrays.asList(
                         "books/the_iliad/additional1.jpg",
                         "books/the_iliad/additional2.jpg"
@@ -188,7 +201,8 @@ public class DatabaseInitializer {
                 Book e5 = new Book("Дон Кихот", "Мигель де Сервантес");
                 e5.setDescription(genericDesc);
                 e5.setPdfPath("books/don_quixote/book.pdf");
-                e5.setCoverImagePath("books/don_quixote/cover.jpg");
+                e5.setCoverImagePath("books/don_quixote/cover_low_res.jpg");
+                e5.setHighResCoverImagePath("books/don_quixote/cover_high_res.jpg");
                 e5.setAdditionalImages(Arrays.asList(
                         "books/don_quixote/additional1.jpg",
                         "books/don_quixote/additional2.jpg"
@@ -199,7 +213,8 @@ public class DatabaseInitializer {
                 Book e6 = new Book("Анна Каренина", "Лев Толстой");
                 e6.setDescription(genericDesc);
                 e6.setPdfPath("books/anna_karenina/book.pdf");
-                e6.setCoverImagePath("books/anna_karenina/cover.jpg");
+                e6.setCoverImagePath("books/anna_karenina/cover_low_res.jpg");
+                e6.setHighResCoverImagePath("books/anna_karenina/cover_high_res.jpg");
                 e6.setAdditionalImages(Arrays.asList(
                         "books/anna_karenina/additional1.jpg",
                         "books/anna_karenina/additional2.jpg"
@@ -210,7 +225,8 @@ public class DatabaseInitializer {
                 Book e7 = new Book("Отверженные", "Виктор Гюго");
                 e7.setDescription(genericDesc);
                 e7.setPdfPath("books/les_miserables/book.pdf");
-                e7.setCoverImagePath("books/les_miserables/cover.jpg");
+                e7.setCoverImagePath("books/les_miserables/cover_low_res.jpg");
+                e7.setHighResCoverImagePath("books/les_miserables/cover_high_res.jpg");
                 e7.setAdditionalImages(Arrays.asList(
                         "books/les_miserables/additional1.jpg",
                         "books/les_miserables/additional2.jpg"
@@ -221,7 +237,8 @@ public class DatabaseInitializer {
                 Book e8 = new Book("Братья Карамазовы", "Фёдор Достоевский");
                 e8.setDescription(genericDesc);
                 e8.setPdfPath("books/the_brothers_karamazov/book.pdf");
-                e8.setCoverImagePath("books/the_brothers_karamazov/cover.jpg");
+                e8.setCoverImagePath("books/the_brothers_karamazov/cover_low_res.jpg");
+                e8.setHighResCoverImagePath("books/the_brothers_karamazov/cover_high_res.jpg");
                 e8.setAdditionalImages(Arrays.asList(
                         "books/the_brothers_karamazov/additional1.jpg",
                         "books/the_brothers_karamazov/additional2.jpg"
@@ -232,7 +249,8 @@ public class DatabaseInitializer {
                 Book e9 = new Book("Большие надежды", "Чарльз Диккенс");
                 e9.setDescription(genericDesc);
                 e9.setPdfPath("books/great_expectations/book.pdf");
-                e9.setCoverImagePath("books/great_expectations/cover.jpg");
+                e9.setCoverImagePath("books/great_expectations/cover_low_res.jpg");
+                e9.setHighResCoverImagePath("books/great_expectations/cover_high_res.jpg");
                 e9.setAdditionalImages(Arrays.asList(
                         "books/great_expectations/additional1.jpg",
                         "books/great_expectations/additional2.jpg"
@@ -243,7 +261,8 @@ public class DatabaseInitializer {
                 Book e10 = new Book("Улисс", "Джеймс Джойс");
                 e10.setDescription(genericDesc);
                 e10.setPdfPath("books/ulysses/book.pdf");
-                e10.setCoverImagePath("books/ulysses/cover.jpg");
+                e10.setCoverImagePath("books/ulysses/cover_low_res.jpg");
+                e10.setHighResCoverImagePath("books/ulysses/cover_high_res.jpg");
                 e10.setAdditionalImages(Arrays.asList(
                         "books/ulysses/additional1.jpg",
                         "books/ulysses/additional2.jpg"

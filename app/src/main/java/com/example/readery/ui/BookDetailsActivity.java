@@ -13,60 +13,59 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Активность для отображения подробной информации о книге.
- */
 public class BookDetailsActivity extends AppCompatActivity {
-    private BookDetailsViewModel viewModel; // ViewModel для получения данных о книге
+    private BookDetailsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_details); // Используем обновленный layout
+        setContentView(R.layout.activity_book_details);
 
-        // Получаем bookId из Intent, переданного из фрагмента
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
-            // Если bookId не передан или неверный, завершаем активность
             finish();
             return;
         }
 
-        // Инициализируем ViewModel для работы с данными книги
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
-        viewModel.setBookId(bookId); // Устанавливаем bookId для загрузки данных
+        viewModel.setBookId(bookId);
 
-        // Наблюдаем за LiveData<Book> и обновляем UI, когда данные получены
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // Установка заголовка книги
+                // Установка текста
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle());
 
-                // Установка автора книги
                 TextView authorView = findViewById(R.id.book_author);
                 authorView.setText(book.getAuthor());
 
-                // Установка полного описания книги
                 TextView descriptionView = findViewById(R.id.book_description);
                 descriptionView.setText(book.getDescription());
 
-                // Настройка ViewPager для отображения изображений (обложка + дополнительные)
+                // Настройка ViewPager и TabLayout
                 ViewPager imagePager = findViewById(R.id.image_pager);
                 TabLayout tabLayout = findViewById(R.id.tab_layout);
 
                 List<String> allImages = new ArrayList<>();
-                if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
-                    allImages.add(book.getCoverImagePath());
+                // Используем изображение высокого разрешения для главной фотографии
+                if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
+                    allImages.add(book.getHighResCoverImagePath());
+                } else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
+                    allImages.add(book.getCoverImagePath()); // Запасной вариант
                 }
                 if (book.getAdditionalImages() != null) {
                     allImages.addAll(book.getAdditionalImages());
                 }
+
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
 
-                // Связываем TabLayout с ViewPager для отображения индикаторов
+                // Настройка TabLayout для улучшенной видимости индикаторов
                 tabLayout.setupWithViewPager(imagePager);
+                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                tabLayout.setTabIndicatorFullWidth(false); // Точки вместо полосок
+                tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.black));
+                tabLayout.setTabTextColors(getResources().getColor(R.color.gray), getResources().getColor(R.color.black));
             }
         });
     }

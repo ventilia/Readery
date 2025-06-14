@@ -12,7 +12,8 @@ public class Book {
     private String author;
     private String description;
     private String pdfPath;
-    private String coverImagePath;
+    private String coverImagePath; // Путь к изображению низкого разрешения
+    private String highResCoverImagePath; // Путь к изображению высокого разрешения
     private List<String> additionalImages;
 
     public Book(String title, String author) {
@@ -67,6 +68,14 @@ public class Book {
 
     public void setCoverImagePath(String coverImagePath) {
         this.coverImagePath = coverImagePath;
+    }
+
+    public String getHighResCoverImagePath() {
+        return highResCoverImagePath;
+    }
+
+    public void setHighResCoverImagePath(String highResCoverImagePath) {
+        this.highResCoverImagePath = highResCoverImagePath;
     }
 
     public List<String> getAdditionalImages() {
