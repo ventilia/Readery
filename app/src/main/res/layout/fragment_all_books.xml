@@ -4,11 +4,13 @@
     android:layout_height="match_parent"
     android:background="@color/ivory">
 
-    <!-- RecyclerView для списка книг, занимает всю высоту и находится на заднем плане -->
+    <!-- RecyclerView для списка книг, с отступом сверху -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_all_books"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingTop="60dp"
+        android:clipToPadding="false" />
 
     <!-- Верхняя панель с поиском, фиксирована вверху поверх RecyclerView -->
     <LinearLayout
