@@ -2,11 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:fontFamily="@font/bookerly"
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
     <item
+        android:fontFamily="@font/bookerly"
         android:id="@+id/navigation_all_books"
         android:icon="@drawable/ic_books"
         android:title="@string/title_all_books" />
