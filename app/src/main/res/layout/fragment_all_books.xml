@@ -4,7 +4,13 @@
     android:layout_height="match_parent"
     android:background="@color/ivory">
 
-    <!-- Верхняя панель с поиском -->
+    <!-- RecyclerView для списка книг, занимает всю высоту и находится на заднем плане -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_all_books"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Верхняя панель с поиском, фиксирована вверху поверх RecyclerView -->
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
@@ -27,25 +33,17 @@
             android:textColor="@color/black" />
     </LinearLayout>
 
-    <!-- RecyclerView для списка книг -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_all_books"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/top_layout" />
-
-    <!-- Колонка фильтра с полупрозрачным фоном -->
+    <!-- Колонка фильтра, привязана к правому краю, поверх RecyclerView -->
     <LinearLayout
         android:id="@+id/filter_column"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-
         android:orientation="vertical">
         <!-- Здесь можно добавить элементы фильтра, например, чекбоксы -->
     </LinearLayout>
 
-    <!-- Кнопка фильтра в правом нижнем углу -->
+    <!-- Кнопка фильтра в правом нижнем углу, поверх RecyclerView -->
     <ImageButton
         android:id="@+id/filter_button"
         android:layout_width="48dp"
