@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:queryHint="Поиск книг"
+            android:queryHint="@string/search_hint"
             android:iconifiedByDefault="false"
             android:background="@drawable/search_background"
             android:searchIcon="@drawable/ic_search"

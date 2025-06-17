@@ -21,6 +21,38 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-        <!-- Здесь в будущем будут настройки -->
+        <!-- Настройка языка -->
+        <LinearLayout
+            android:id="@+id/language_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Язык"
+                android:src="@drawable/ic_language" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Language"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/language_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="English"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

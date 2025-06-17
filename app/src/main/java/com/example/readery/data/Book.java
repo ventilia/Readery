@@ -1,5 +1,6 @@
 package com.example.readery.data;
 
+import android.content.Context;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.util.List;
@@ -10,15 +11,27 @@ public class Book {
     private long id;
     private String title;
     private String author;
-    private String description;
+    private String descriptionEn; // Описание на английском
+    private String descriptionRu; // Описание на русском
     private String pdfPath;
-    private String coverImagePath; // Путь к изображению низкого разрешения
-    private String highResCoverImagePath; // Путь к изображению высокого разрешения
+    private String coverImagePath;
+    private String highResCoverImagePath;
     private List<String> additionalImages;
 
+    // Основной конструктор с минимальными параметрами
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
+    }
+
+    // Метод для получения описания в зависимости от языка
+    public String getDescription(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        if ("ru".equals(lang)) {
+            return descriptionRu != null ? descriptionRu : (descriptionEn != null ? descriptionEn : "Описание недоступно");
+        } else {
+            return descriptionEn != null ? descriptionEn : (descriptionRu != null ? descriptionRu : "Description not available");
+        }
     }
 
     // Геттеры и сеттеры
@@ -46,12 +59,20 @@ public class Book {
         this.author = author;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptionEn() {
+        return descriptionEn;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getDescriptionRu() {
+        return descriptionRu;
+    }
+
+    public void setDescriptionRu(String descriptionRu) {
+        this.descriptionRu = descriptionRu;
     }
 
     public String getPdfPath() {
