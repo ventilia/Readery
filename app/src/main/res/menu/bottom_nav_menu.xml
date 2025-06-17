@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- Пункт "Home" -->
     <item
         android:fontFamily="@font/bookerly"
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
+    <!-- Пункт "All Books" -->
     <item
         android:fontFamily="@font/bookerly"
         android:id="@+id/navigation_all_books"
         android:icon="@drawable/ic_books"
         android:title="@string/title_all_books" />
 
+    <!-- Новый пункт "Library" -->
+    <item
+        android:fontFamily="@font/bookerly"
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ic_library"
+        android:title="@string/title_library" />
+
+    <!-- Новый пункт "Settings" -->
+    <item
+        android:fontFamily="@font/bookerly"
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/title_settings" />
 </menu>
