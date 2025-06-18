@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.readery.data.Book;
 import com.example.readery.repository.BookRepository;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,47 +20,49 @@ public class AllBooksViewModel extends AndroidViewModel {
     private MutableLiveData<String> filterOrder = new MutableLiveData<>("ASC");
     private MediatorLiveData<List<Book>> searchedBooks = new MediatorLiveData<>();
     private String language;
+    private LiveData<List<Book>> currentSource;
 
     /**
-     * Конструктор ViewModel.
-     *
-     * @param application Приложение, для доступа к контексту.
+     * конструктор ViewModel
+     * @param application приложение для доступа к контексту
      */
     public AllBooksViewModel(Application application) {
         super(application);
         repository = new BookRepository(application);
-        // Определяем текущий язык устройства
         language = application.getResources().getConfiguration().getLocales().get(0).getLanguage();
 
-        // Настройка MediatorLiveData для отслеживания изменений в searchQuery, filterType и filterOrder
-        searchedBooks.addSource(searchQuery, query -> updateSearchedBooks());
-        searchedBooks.addSource(filterType, type -> updateSearchedBooks());
-        searchedBooks.addSource(filterOrder, order -> updateSearchedBooks());
+        // инициализируем searchedBooks с allBooks
+        currentSource = repository.getAllBooks();
+        searchedBooks.addSource(currentSource, books ->
+                searchedBooks.setValue(books != null ? books : new ArrayList<>())
+        );
+
+        // наблюдаем за изменениями фильтров и запроса
+        searchQuery.observeForever(this::updateSearchedBooks);
+        filterType.observeForever(this::updateSearchedBooks);
+        filterOrder.observeForever(this::updateSearchedBooks);
     }
 
     /**
-     * Получает все книги из репозитория.
-     *
-     * @return LiveData со списком всех книг.
+     * получает отфильтрованные и отсортированные книги
+     * @return LiveData со списком книг
      */
-    public LiveData<List<Book>> getBooks() {
-        return repository.getAllBooks();
+    public LiveData<List<Book>> getSearchedBooks() {
+        return searchedBooks;
     }
 
     /**
-     * Устанавливает запрос для поиска книг.
-     *
-     * @param query Строка запроса.
+     * устанавливает запрос для поиска книг
+     * @param query строка запроса
      */
     public void setSearchQuery(String query) {
         searchQuery.setValue(query);
     }
 
     /**
-     * Устанавливает тип фильтрации и порядок.
-     *
-     * @param type  Тип фильтрации ("title" или "author").
-     * @param order Порядок ("ASC" или "DESC").
+     * устанавливает тип фильтрации и порядок
+     * @param type тип фильтрации ("title" или "author")
+     * @param order порядок ("ASC" или "DESC")
      */
     public void setFilter(String type, String order) {
         filterType.setValue(type);
@@ -67,33 +70,39 @@ public class AllBooksViewModel extends AndroidViewModel {
     }
 
     /**
-     * Получает отфильтрованные и отсортированные книги на основе текущего запроса и фильтров.
-     *
-     * @return LiveData со списком книг, соответствующих запросу и фильтрам.
+     * обновляет список книг на основе текущего запроса и фильтров
      */
-    public LiveData<List<Book>> getSearchedBooks() {
-        return searchedBooks;
-    }
-
-    /**
-     * Обновляет список книг на основе текущего запроса, фильтров и языка.
-     */
-    private void updateSearchedBooks() {
+    private void updateSearchedBooks(Object ignored) {
         String query = searchQuery.getValue();
         String type = filterType.getValue();
         String order = filterOrder.getValue();
 
-        if (query == null || query.isEmpty()) {
-            // Если запрос пуст, возвращаем все книги
-            searchedBooks.setValue(repository.getAllBooks().getValue());
-        } else {
-            // Иначе выполняем поиск с учетом языка
-            LiveData<List<Book>> booksLiveData = repository.searchBooks(
-                    "%" + query + "%", type, order, language);
-            searchedBooks.addSource(booksLiveData, books -> {
-                searchedBooks.setValue(books);
-                searchedBooks.removeSource(booksLiveData);
-            });
+        // удаляем предыдущий источник
+        if (currentSource != null) {
+            searchedBooks.removeSource(currentSource);
         }
+
+        // определяем новый источник данных
+        if (query == null || query.isEmpty()) {
+            currentSource = repository.getAllBooks();
+        } else {
+            currentSource = repository.searchBooks("%" + query + "%", type, order, language);
+        }
+
+        // добавляем новый источник и обрабатываем данные
+        searchedBooks.addSource(currentSource, books ->
+                searchedBooks.setValue(books != null ? books : new ArrayList<>())
+        );
+    }
+
+    /**
+     * очистка ресурсов при уничтожении ViewModel
+     */
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        searchQuery.removeObserver(this::updateSearchedBooks);
+        filterType.removeObserver(this::updateSearchedBooks);
+        filterOrder.removeObserver(this::updateSearchedBooks);
     }
 }

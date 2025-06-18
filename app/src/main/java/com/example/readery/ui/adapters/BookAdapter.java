@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
-    private List<Book> books = new ArrayList<>();
+    private List<Book> books = new ArrayList<>(); // начальное значение - пустой список
     private OnBookClickListener listener;
     private Context context;
 
@@ -33,18 +33,22 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         void onBookClick(Book book);
     }
 
+    /**
+     * конструктор адаптера
+     * @param listener обработчик кликов по книге
+     * @param context контекст приложения
+     */
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
         this.context = context;
     }
 
     /**
-     * Устанавливает список книг и обновляет отображение.
-     *
-     * @param books Список книг для отображения.
+     * устанавливает список книг и обновляет отображение
+     * @param books список книг для отображения, может быть null
      */
     public void setBooks(List<Book> books) {
-        this.books = books;
+        this.books = (books != null) ? books : new ArrayList<>(); // если null, используем пустой список
         notifyDataSetChanged();
     }
 
@@ -59,11 +63,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = books.get(position);
 
-        // Устанавливаем локализованные данные
+        // устанавливаем локализованные данные
         holder.title.setText(book.getTitle(context));
         holder.author.setText(book.getAuthor(context));
 
-        // Загружаем обложку книги с помощью Glide
+        // загружаем обложку книги с помощью Glide
         String coverPath = book.getCoverImagePath();
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -73,7 +77,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .into(holder.cover);
         }
 
-        // Обработка нажатий с анимацией
+        // обработка нажатий с анимацией
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -91,9 +95,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         });
     }
 
+    /**
+     * возвращает количество элементов в списке
+     * @return размер списка books или 0, если список null
+     */
     @Override
     public int getItemCount() {
-        return books.size();
+        return books != null ? books.size() : 0; // безопасная проверка на null
     }
 
     /**
