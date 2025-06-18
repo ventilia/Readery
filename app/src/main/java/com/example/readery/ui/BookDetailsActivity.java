@@ -12,6 +12,10 @@ import com.example.readery.viewmodel.BookDetailsViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Активити для отображения детальной информации о книге.
+ * ActionBar скрыт, все текстовые данные поддерживают локализацию.
+ */
 public class BookDetailsActivity extends AppCompatActivity {
     private BookDetailsViewModel viewModel;
 
@@ -20,21 +24,26 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        // Получение ID книги из Intent
+        // Скрываем ActionBar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
+        // Получаем ID книги из Intent
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
-            finish();
+            finish(); // Закрываем активити, если ID книги не передан
             return;
         }
 
-        // Инициализация ViewModel
+        // Инициализируем ViewModel
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
-        // Наблюдение за данными книги
+        // Наблюдаем за данными книги
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // Установка текста для заголовка, автора и описания с учетом локализации
+                // Устанавливаем переведенные данные книги
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle(this));
 
@@ -44,22 +53,24 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView descriptionView = findViewById(R.id.book_description);
                 descriptionView.setText(book.getDescription(this));
 
-                // Настройка ViewPager для изображений
+                // Настраиваем ViewPager для отображения изображений
                 ViewPager imagePager = findViewById(R.id.image_pager);
-
                 List<String> allImages = new ArrayList<>();
-                // Добавление изображения высокого разрешения или обычного обложки
+
+                // Добавляем изображение высокого разрешения, если оно есть
                 if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
                     allImages.add(book.getHighResCoverImagePath());
-                } else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
-                    allImages.add(book.getCoverImagePath()); // Запасной вариант
                 }
-                // Добавление дополнительных изображений
+                // В качестве запасного варианта добавляем обычное изображение обложки
+                else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
+                    allImages.add(book.getCoverImagePath());
+                }
+                // Добавляем дополнительные изображения, если они есть
                 if (book.getAdditionalImages() != null) {
                     allImages.addAll(book.getAdditionalImages());
                 }
 
-                // Установка адаптера для ViewPager
+                // Устанавливаем адаптер для ViewPager
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
             }
