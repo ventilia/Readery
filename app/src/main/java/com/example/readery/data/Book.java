@@ -5,36 +5,67 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.util.List;
 
+/**
+ * Класс, представляющий книгу с локализованными данными.
+ */
 @Entity(tableName = "books")
 public class Book {
     @PrimaryKey(autoGenerate = true)
     private long id;
-    private String title;
-    private String author;
+    private String titleEn; // Название на английском
+    private String titleRu; // Название на русском
+    private String authorEn; // Автор на английском
+    private String authorRu; // Автор на русском
     private String descriptionEn; // Описание на английском
     private String descriptionRu; // Описание на русском
-    private String pdfPath;
-    private String coverImagePath;
-    private String highResCoverImagePath;
-    private List<String> additionalImages;
+    private String pdfPath; // Путь к PDF-файлу
+    private String coverImagePath; // Путь к обложке низкого разрешения
+    private String highResCoverImagePath; // Путь к обложке высокого разрешения
+    private List<String> additionalImages; // Список дополнительных изображений
 
-    // Основной конструктор с минимальными параметрами
-    public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
+    public Book() {
     }
 
-    // Метод для получения описания в зависимости от языка
+    /**
+     * Возвращает название книги в зависимости от текущего языка устройства.
+     *
+     * @param context Контекст приложения для получения текущей локали.
+     * @return Название книги на русском или английском языке.
+     */
+    public String getTitle(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? titleRu : titleEn;
+    }
+
+    /**
+     * Возвращает автора книги в зависимости от текущего языка устройства.
+     *
+     * @param context Контекст приложения для получения текущей локали.
+     * @return Автор книги на русском или английском языке.
+     */
+    public String getAuthor(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? authorRu : authorEn;
+    }
+
+    /**
+     * Возвращает описание книги в зависимости от текущего языка устройства.
+     * Если описание на текущем языке отсутствует, возвращается описание на другом языке.
+     *
+     * @param context Контекст приложения для получения текущей локали.
+     * @return Описание книги на русском или английском языке.
+     */
     public String getDescription(Context context) {
         String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
         if ("ru".equals(lang)) {
-            return descriptionRu != null ? descriptionRu : (descriptionEn != null ? descriptionEn : "Описание недоступно");
+            return descriptionRu != null ? descriptionRu : descriptionEn;
         } else {
-            return descriptionEn != null ? descriptionEn : (descriptionRu != null ? descriptionRu : "Description not available");
+            return descriptionEn != null ? descriptionEn : descriptionRu;
         }
     }
 
-    // Геттеры и сеттеры
+    // Геттеры и сеттеры для всех полей
+
     public long getId() {
         return id;
     }
@@ -43,20 +74,36 @@ public class Book {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitleEn() {
+        return titleEn;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getTitleRu() {
+        return titleRu;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getAuthorEn() {
+        return authorEn;
+    }
+
+    public void setAuthorEn(String authorEn) {
+        this.authorEn = authorEn;
+    }
+
+    public String getAuthorRu() {
+        return authorRu;
+    }
+
+    public void setAuthorRu(String authorRu) {
+        this.authorRu = authorRu;
     }
 
     public String getDescriptionEn() {

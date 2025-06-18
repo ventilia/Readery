@@ -34,15 +34,15 @@ public class BookDetailsActivity extends AppCompatActivity {
         // Наблюдение за данными книги
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // Установка текста для заголовка, автора и описания
+                // Установка текста для заголовка, автора и описания с учетом локализации
                 TextView titleView = findViewById(R.id.book_title);
-                titleView.setText(book.getTitle());
+                titleView.setText(book.getTitle(this));
 
                 TextView authorView = findViewById(R.id.book_author);
-                authorView.setText(book.getAuthor());
+                authorView.setText(book.getAuthor(this));
 
                 TextView descriptionView = findViewById(R.id.book_description);
-                descriptionView.setText(book.getDescription(this)); // Учет локали
+                descriptionView.setText(book.getDescription(this));
 
                 // Настройка ViewPager для изображений
                 ViewPager imagePager = findViewById(R.id.image_pager);

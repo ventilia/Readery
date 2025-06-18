@@ -13,67 +13,78 @@ import com.bumptech.glide.Glide;
 import com.example.readery.R;
 import com.example.readery.animation.CardAnimationHelper;
 import com.example.readery.data.Book;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Адаптер для отображения списка книг в RecyclerView с поддержкой локализации.
+ */
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
     private List<Book> books = new ArrayList<>();
     private OnBookClickListener listener;
+    private Context context;
 
-    // Интерфейс для обработки кликов по книге
+    /**
+     * Интерфейс для обработки кликов по книге.
+     */
     public interface OnBookClickListener {
         void onBookClick(Book book);
     }
 
-    // Конструктор адаптера
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
+        this.context = context;
     }
 
-    // Метод для установки списка книг
+    /**
+     * Устанавливает список книг и обновляет отображение.
+     *
+     * @param books Список книг для отображения.
+     */
     public void setBooks(List<Book> books) {
         this.books = books;
-        notifyDataSetChanged(); // Уведомляем адаптер об изменении данных
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Создаем представление элемента списка из макета item_book
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book, parent, false);
         return new BookViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        // Получаем книгу по текущей позиции
         Book book = books.get(position);
-        holder.title.setText(book.getTitle());   // Устанавливаем заголовок книги
-        holder.author.setText(book.getAuthor()); // Устанавливаем автора книги
 
-        // Загружаем обложку книги
+        // Устанавливаем локализованные данные
+        holder.title.setText(book.getTitle(context));
+        holder.author.setText(book.getAuthor(context));
+
+        // Загружаем обложку книги с помощью Glide
         String coverPath = book.getCoverImagePath();
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
-                    .load("file:///android_asset/" + coverPath) // Путь к обложке
-                    .placeholder(R.drawable.default_cover)      // Заглушка на время загрузки
-                    .error(R.drawable.error_cover)              // Картинка при ошибке
-                    .into(holder.cover);                        // Устанавливаем в ImageView
+                    .load("file:///android_asset/" + coverPath)
+                    .placeholder(R.drawable.default_cover)
+                    .error(R.drawable.error_cover)
+                    .into(holder.cover);
         }
 
-        // Обработка касаний с анимацией
+        // Обработка нажатий с анимацией
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:        // При нажатии
-                    CardAnimationHelper.animatePress(v); // Анимация нажатия
+                case MotionEvent.ACTION_DOWN:
+                    CardAnimationHelper.animatePress(v);
                     return true;
-                case MotionEvent.ACTION_UP:          // При отпускании
-                    CardAnimationHelper.animateRelease(v); // Анимация отпускания
-                    listener.onBookClick(book);          // Вызываем обработчик клика
+                case MotionEvent.ACTION_UP:
+                    CardAnimationHelper.animateRelease(v);
+                    listener.onBookClick(book);
                     return true;
-                case MotionEvent.ACTION_CANCEL:      // При отмене касания
-                    CardAnimationHelper.animateRelease(v); // Анимация отпускания
+                case MotionEvent.ACTION_CANCEL:
+                    CardAnimationHelper.animateRelease(v);
                     return true;
             }
             return false;
@@ -82,19 +93,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     @Override
     public int getItemCount() {
-        // Возвращаем количество книг в списке
         return books.size();
     }
 
-    // Внутренний класс для хранения элементов представления книги
+    /**
+     * ViewHolder для хранения элементов карточки книги.
+     */
     static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView title;   // Поле для заголовка
-        TextView author;  // Поле для автора
-        ImageView cover;  // Поле для обложки
+        TextView title;
+        TextView author;
+        ImageView cover;
 
         BookViewHolder(View itemView) {
             super(itemView);
-            // Инициализируем элементы интерфейса
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
             cover = itemView.findViewById(R.id.book_cover);

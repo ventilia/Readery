@@ -29,7 +29,7 @@ public class BookRepository {
         return bookDao.getBooksByTag(tagId);
     }
 
-    public LiveData<List<Book>> searchBooks(String query, String filterType, String filterOrder) {
-        return bookDao.searchBooks(query, filterType, filterOrder);
+    public LiveData<List<Book>> searchBooks(String query, String filterType, String filterOrder, String language) {
+        return bookDao.searchBooks("%" + query + "%", filterType, filterOrder, language);
     }
 }

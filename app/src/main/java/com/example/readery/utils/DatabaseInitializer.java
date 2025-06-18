@@ -8,8 +8,16 @@ import com.example.readery.data.Tag;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 
+/**
+ * Класс для инициализации базы данных тестовыми данными.
+ */
 public class DatabaseInitializer {
 
+    /**
+     * Заполняет базу данных тестовыми книгами и тегами, если она пуста.
+     *
+     * @param context Контекст приложения.
+     */
     public static void populateDatabase(Context context) {
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(context);
@@ -29,7 +37,11 @@ public class DatabaseInitializer {
                 String genericDescRu = "Классическое произведение мировой литературы.";
 
                 // ==== NEW (5 книг) ====
-                Book b1 = new Book("Pride and Prejudice", "Jane Austen");
+                Book b1 = new Book();
+                b1.setTitleEn("Pride and Prejudice");
+                b1.setTitleRu("Гордость и предубеждение");
+                b1.setAuthorEn("Jane Austen");
+                b1.setAuthorRu("Джейн Остин");
                 b1.setDescriptionEn("A novel about love and social norms in 19th century England.");
                 b1.setDescriptionRu("Роман о любви и социальных нормах в Англии 19 века.");
                 b1.setPdfPath("books/pride_and_prejudice/book.pdf");
@@ -42,7 +54,11 @@ public class DatabaseInitializer {
                 long id1 = db.bookDao().insert(b1);
                 db.bookTagDao().insert(new BookTag(id1, newTagId));
 
-                Book b2 = new Book("To Kill a Mockingbird", "Harper Lee");
+                Book b2 = new Book();
+                b2.setTitleEn("To Kill a Mockingbird");
+                b2.setTitleRu("Убить пересмешника");
+                b2.setAuthorEn("Harper Lee");
+                b2.setAuthorRu("Харпер Ли");
                 b2.setDescriptionEn("A novel about racial injustice and growing up in the American South.");
                 b2.setDescriptionRu("Роман о расовой несправедливости и взрослении на юге США.");
                 b2.setPdfPath("books/to_kill_a_mockingbird/book.pdf");
@@ -55,7 +71,11 @@ public class DatabaseInitializer {
                 long id2 = db.bookDao().insert(b2);
                 db.bookTagDao().insert(new BookTag(id2, newTagId));
 
-                Book b3 = new Book("1984", "George Orwell");
+                Book b3 = new Book();
+                b3.setTitleEn("1984");
+                b3.setTitleRu("1984");
+                b3.setAuthorEn("George Orwell");
+                b3.setAuthorRu("Джордж Оруэлл");
                 b3.setDescriptionEn("A dystopian novel about a totalitarian society.");
                 b3.setDescriptionRu("Дистопический роман о тоталитарном обществе.");
                 b3.setPdfPath("books/1984/book.pdf");
@@ -68,7 +88,11 @@ public class DatabaseInitializer {
                 long id3 = db.bookDao().insert(b3);
                 db.bookTagDao().insert(new BookTag(id3, newTagId));
 
-                Book b4 = new Book("The Great Gatsby", "F. Scott Fitzgerald");
+                Book b4 = new Book();
+                b4.setTitleEn("The Great Gatsby");
+                b4.setTitleRu("Великий Гэтсби");
+                b4.setAuthorEn("F. Scott Fitzgerald");
+                b4.setAuthorRu("Фрэнсис Скотт Фицджеральд");
                 b4.setDescriptionEn("A novel about the American dream and decline in the 1920s.");
                 b4.setDescriptionRu("Роман о американской мечте и упадке в 1920-х годах.");
                 b4.setPdfPath("books/the_great_gatsby/book.pdf");
@@ -81,7 +105,11 @@ public class DatabaseInitializer {
                 long id4 = db.bookDao().insert(b4);
                 db.bookTagDao().insert(new BookTag(id4, newTagId));
 
-                Book b5 = new Book("Moby Dick", "Herman Melville");
+                Book b5 = new Book();
+                b5.setTitleEn("Moby Dick");
+                b5.setTitleRu("Моби Дик");
+                b5.setAuthorEn("Herman Melville");
+                b5.setAuthorRu("Герман Мелвилл");
                 b5.setDescriptionEn("An epic tale of Captain Ahab and his obsession with a white whale.");
                 b5.setDescriptionRu("Эпическая история о капитане Ахаве и его одержимости белым китом.");
                 b5.setPdfPath("books/moby_dick/book.pdf");
@@ -95,7 +123,11 @@ public class DatabaseInitializer {
                 db.bookTagDao().insert(new BookTag(id5, newTagId));
 
                 // ==== POPULAR (5 книг) ====
-                Book b6 = new Book("War and Peace", "Leo Tolstoy");
+                Book b6 = new Book();
+                b6.setTitleEn("War and Peace");
+                b6.setTitleRu("Война и мир");
+                b6.setAuthorEn("Leo Tolstoy");
+                b6.setAuthorRu("Лев Толстой");
                 b6.setDescriptionEn("A grand novel about Russian life during the Napoleonic wars.");
                 b6.setDescriptionRu("Масштабный роман о русской жизни во времена наполеоновских войн.");
                 b6.setPdfPath("books/war_and_peace/book.pdf");
@@ -108,7 +140,11 @@ public class DatabaseInitializer {
                 long id6 = db.bookDao().insert(b6);
                 db.bookTagDao().insert(new BookTag(id6, popularTagId));
 
-                Book b7 = new Book("The Catcher in the Rye", "J.D. Salinger");
+                Book b7 = new Book();
+                b7.setTitleEn("The Catcher in the Rye");
+                b7.setTitleRu("Над пропастью во ржи");
+                b7.setAuthorEn("J.D. Salinger");
+                b7.setAuthorRu("Джером Сэлинджер");
                 b7.setDescriptionEn("A novel about teenage rebellion and self-discovery.");
                 b7.setDescriptionRu("Роман о подростковом бунте и поиске себя.");
                 b7.setPdfPath("books/the_catcher_in_the_rye/book.pdf");
@@ -121,7 +157,11 @@ public class DatabaseInitializer {
                 long id7 = db.bookDao().insert(b7);
                 db.bookTagDao().insert(new BookTag(id7, popularTagId));
 
-                Book b8 = new Book("Jane Eyre", "Charlotte Brontë");
+                Book b8 = new Book();
+                b8.setTitleEn("Jane Eyre");
+                b8.setTitleRu("Джейн Эйр");
+                b8.setAuthorEn("Charlotte Brontë");
+                b8.setAuthorRu("Шарлотта Бронте");
                 b8.setDescriptionEn("A novel about a strong woman’s fight for love and independence.");
                 b8.setDescriptionRu("Роман о сильной женщине и её борьбе за любовь и независимость.");
                 b8.setPdfPath("books/jane_eyre/book.pdf");
@@ -134,7 +174,11 @@ public class DatabaseInitializer {
                 long id8 = db.bookDao().insert(b8);
                 db.bookTagDao().insert(new BookTag(id8, popularTagId));
 
-                Book b9 = new Book("Crime and Punishment", "Fyodor Dostoevsky");
+                Book b9 = new Book();
+                b9.setTitleEn("Crime and Punishment");
+                b9.setTitleRu("Преступление и наказание");
+                b9.setAuthorEn("Fyodor Dostoevsky");
+                b9.setAuthorRu("Фёдор Достоевский");
                 b9.setDescriptionEn("A psychological novel about guilt and redemption.");
                 b9.setDescriptionRu("Психологический роман о вине и искуплении.");
                 b9.setPdfPath("books/crime_and_punishment/book.pdf");
@@ -147,7 +191,11 @@ public class DatabaseInitializer {
                 long id9 = db.bookDao().insert(b9);
                 db.bookTagDao().insert(new BookTag(id9, popularTagId));
 
-                Book b10 = new Book("The Odyssey", "Homer");
+                Book b10 = new Book();
+                b10.setTitleEn("The Odyssey");
+                b10.setTitleRu("Одиссея");
+                b10.setAuthorEn("Homer");
+                b10.setAuthorRu("Гомер");
                 b10.setDescriptionEn("An epic poem about Odysseus’s adventures.");
                 b10.setDescriptionRu("Эпическая поэма о приключениях Одиссея.");
                 b10.setPdfPath("books/the_odyssey/book.pdf");
@@ -161,7 +209,11 @@ public class DatabaseInitializer {
                 db.bookTagDao().insert(new BookTag(id10, popularTagId));
 
                 // ==== EDITOR'S CHOICE (10 книг) ====
-                Book e1 = new Book("Brave New World", "Aldous Huxley");
+                Book e1 = new Book();
+                e1.setTitleEn("Brave New World");
+                e1.setTitleRu("О дивный новый мир");
+                e1.setAuthorEn("Aldous Huxley");
+                e1.setAuthorRu("Олдос Хаксли");
                 e1.setDescriptionEn(genericDescEn);
                 e1.setDescriptionRu(genericDescRu);
                 e1.setPdfPath("books/brave_new_world/book.pdf");
@@ -174,7 +226,11 @@ public class DatabaseInitializer {
                 long eid1 = db.bookDao().insert(e1);
                 db.bookTagDao().insert(new BookTag(eid1, editorsTagId));
 
-                Book e2 = new Book("The Scarlet Letter", "Nathaniel Hawthorne");
+                Book e2 = new Book();
+                e2.setTitleEn("The Scarlet Letter");
+                e2.setTitleRu("Алая буква");
+                e2.setAuthorEn("Nathaniel Hawthorne");
+                e2.setAuthorRu("Натаниэль Готорн");
                 e2.setDescriptionEn(genericDescEn);
                 e2.setDescriptionRu(genericDescRu);
                 e2.setPdfPath("books/the_scarlet_letter/book.pdf");
@@ -187,7 +243,11 @@ public class DatabaseInitializer {
                 long eid2 = db.bookDao().insert(e2);
                 db.bookTagDao().insert(new BookTag(eid2, editorsTagId));
 
-                Book e3 = new Book("Wuthering Heights", "Emily Brontë");
+                Book e3 = new Book();
+                e3.setTitleEn("Wuthering Heights");
+                e3.setTitleRu("Грозовой перевал");
+                e3.setAuthorEn("Emily Brontë");
+                e3.setAuthorRu("Эмили Бронте");
                 e3.setDescriptionEn(genericDescEn);
                 e3.setDescriptionRu(genericDescRu);
                 e3.setPdfPath("books/wuthering_heights/book.pdf");
@@ -200,7 +260,11 @@ public class DatabaseInitializer {
                 long eid3 = db.bookDao().insert(e3);
                 db.bookTagDao().insert(new BookTag(eid3, editorsTagId));
 
-                Book e4 = new Book("The Iliad", "Homer");
+                Book e4 = new Book();
+                e4.setTitleEn("The Iliad");
+                e4.setTitleRu("Илиада");
+                e4.setAuthorEn("Homer");
+                e4.setAuthorRu("Гомер");
                 e4.setDescriptionEn(genericDescEn);
                 e4.setDescriptionRu(genericDescRu);
                 e4.setPdfPath("books/the_iliad/book.pdf");
@@ -213,7 +277,11 @@ public class DatabaseInitializer {
                 long eid4 = db.bookDao().insert(e4);
                 db.bookTagDao().insert(new BookTag(eid4, editorsTagId));
 
-                Book e5 = new Book("Don Quixote", "Miguel de Cervantes");
+                Book e5 = new Book();
+                e5.setTitleEn("Don Quixote");
+                e5.setTitleRu("Дон Кихот");
+                e5.setAuthorEn("Miguel de Cervantes");
+                e5.setAuthorRu("Мигель де Сервантес");
                 e5.setDescriptionEn(genericDescEn);
                 e5.setDescriptionRu(genericDescRu);
                 e5.setPdfPath("books/don_quixote/book.pdf");
@@ -226,7 +294,11 @@ public class DatabaseInitializer {
                 long eid5 = db.bookDao().insert(e5);
                 db.bookTagDao().insert(new BookTag(eid5, editorsTagId));
 
-                Book e6 = new Book("Anna Karenina", "Leo Tolstoy");
+                Book e6 = new Book();
+                e6.setTitleEn("Anna Karenina");
+                e6.setTitleRu("Анна Каренина");
+                e6.setAuthorEn("Leo Tolstoy");
+                e6.setAuthorRu("Лев Толстой");
                 e6.setDescriptionEn(genericDescEn);
                 e6.setDescriptionRu(genericDescRu);
                 e6.setPdfPath("books/anna_karenina/book.pdf");
@@ -239,7 +311,11 @@ public class DatabaseInitializer {
                 long eid6 = db.bookDao().insert(e6);
                 db.bookTagDao().insert(new BookTag(eid6, editorsTagId));
 
-                Book e7 = new Book("Les Misérables", "Victor Hugo");
+                Book e7 = new Book();
+                e7.setTitleEn("Les Misérables");
+                e7.setTitleRu("Отверженные");
+                e7.setAuthorEn("Victor Hugo");
+                e7.setAuthorRu("Виктор Гюго");
                 e7.setDescriptionEn(genericDescEn);
                 e7.setDescriptionRu(genericDescRu);
                 e7.setPdfPath("books/les_miserables/book.pdf");
@@ -252,20 +328,28 @@ public class DatabaseInitializer {
                 long eid7 = db.bookDao().insert(e7);
                 db.bookTagDao().insert(new BookTag(eid7, editorsTagId));
 
-                Book e8 = new Book("The Brothers Karamazov", "Fyodor Dostoevsky");
-                e8.setDescriptionEn(genericDescEn);
-                e8.setDescriptionRu(genericDescRu);
-                e8.setPdfPath("books/the_brothers_karamazov/book.pdf");
-                e8.setCoverImagePath("books/the_brothers_karamazov/cover_low_res.jpg");
-                e8.setHighResCoverImagePath("books/the_brothers_karamazov/cover_high_res.jpg");
-                e8.setAdditionalImages(Arrays.asList(
+                Book e8 = new Book();
+                b8.setTitleEn("The Brothers Karamazov");
+                b8.setTitleRu("Братья Карамазовы");
+                b8.setAuthorEn("Fyodor Dostoevsky");
+                b8.setAuthorRu("Фёдор Достоевский");
+                b8.setDescriptionEn(genericDescEn);
+                b8.setDescriptionRu(genericDescRu);
+                b8.setPdfPath("books/the_brothers_karamazov/book.pdf");
+                b8.setCoverImagePath("books/the_brothers_karamazov/cover_low_res.jpg");
+                b8.setHighResCoverImagePath("books/the_brothers_karamazov/cover_high_res.jpg");
+                b8.setAdditionalImages(Arrays.asList(
                         "books/the_brothers_karamazov/additional1.jpg",
                         "books/the_brothers_karamazov/additional2.jpg"
                 ));
-                long eid8 = db.bookDao().insert(e8);
+                long eid8 = db.bookDao().insert(b8);
                 db.bookTagDao().insert(new BookTag(eid8, editorsTagId));
 
-                Book e9 = new Book("Great Expectations", "Charles Dickens");
+                Book e9 = new Book();
+                e9.setTitleEn("Great Expectations");
+                e9.setTitleRu("Большие надежды");
+                e9.setAuthorEn("Charles Dickens");
+                e9.setAuthorRu("Чарльз Диккенс");
                 e9.setDescriptionEn(genericDescEn);
                 e9.setDescriptionRu(genericDescRu);
                 e9.setPdfPath("books/great_expectations/book.pdf");
@@ -278,7 +362,11 @@ public class DatabaseInitializer {
                 long eid9 = db.bookDao().insert(e9);
                 db.bookTagDao().insert(new BookTag(eid9, editorsTagId));
 
-                Book e10 = new Book("Ulysses", "James Joyce");
+                Book e10 = new Book();
+                e10.setTitleEn("Ulysses");
+                e10.setTitleRu("Улисс");
+                e10.setAuthorEn("James Joyce");
+                e10.setAuthorRu("Джеймс Джойс");
                 e10.setDescriptionEn(genericDescEn);
                 e10.setDescriptionRu(genericDescRu);
                 e10.setPdfPath("books/ulysses/book.pdf");
