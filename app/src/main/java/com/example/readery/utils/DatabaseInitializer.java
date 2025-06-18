@@ -162,8 +162,8 @@ public class DatabaseInitializer {
                 b8.setTitleRu("Джейн Эйр");
                 b8.setAuthorEn("Charlotte Brontë");
                 b8.setAuthorRu("Шарлотта Бронте");
-                b8.setDescriptionEn("A novel about a strong woman’s fight for love and independence.");
-                b8.setDescriptionRu("Роман о сильной женщине и её борьбе за любовь и независимость.");
+                b8.setDescriptionEn("A novel about a strong woman’s fight for love and independence. It follows the story of Jane Eyre, an orphaned girl who becomes a governess and falls in love with her employer, Mr. Rochester, while uncovering dark secrets at Thornfield Hall. The novel explores themes of morality, social criticism, and the struggles faced by women in the Victorian era. Jane's journey is one of self-discovery, resilience, and the pursuit of equality and happiness in a society that often denies her both.");
+                b8.setDescriptionRu("Роман о сильной женщине и её борьбе за любовь и независимость. Он рассказывает историю Джейн Эйр, осиротевшей девушки, которая становится гувернанткой и влюбляется в своего работодателя, мистера Рочестера, раскрывая при этом тёмные тайны Торнфилд-Холла. Роман исследует темы морали, социальной критики и трудностей, с которыми сталкиваются женщины в викторианскую эпоху. Путешествие Джейн — это путь самопознания, стойкости и стремления к равенству и счастью в обществе, которое часто лишает её и того, и другого.");
                 b8.setPdfPath("books/jane_eyre/book.pdf");
                 b8.setCoverImagePath("books/jane_eyre/cover_low_res.jpg");
                 b8.setHighResCoverImagePath("books/jane_eyre/cover_high_res.jpg");
@@ -329,20 +329,20 @@ public class DatabaseInitializer {
                 db.bookTagDao().insert(new BookTag(eid7, editorsTagId));
 
                 Book e8 = new Book();
-                b8.setTitleEn("The Brothers Karamazov");
-                b8.setTitleRu("Братья Карамазовы");
-                b8.setAuthorEn("Fyodor Dostoevsky");
-                b8.setAuthorRu("Фёдор Достоевский");
-                b8.setDescriptionEn(genericDescEn);
-                b8.setDescriptionRu(genericDescRu);
-                b8.setPdfPath("books/the_brothers_karamazov/book.pdf");
-                b8.setCoverImagePath("books/the_brothers_karamazov/cover_low_res.jpg");
-                b8.setHighResCoverImagePath("books/the_brothers_karamazov/cover_high_res.jpg");
-                b8.setAdditionalImages(Arrays.asList(
+                e8.setTitleEn("The Brothers Karamazov");
+                e8.setTitleRu("Братья Карамазовы");
+                e8.setAuthorEn("Fyodor Dostoevsky");
+                e8.setAuthorRu("Фёдор Достоевский");
+                e8.setDescriptionEn(genericDescEn);
+                e8.setDescriptionRu(genericDescRu);
+                e8.setPdfPath("books/the_brothers_karamazov/book.pdf");
+                e8.setCoverImagePath("books/the_brothers_karamazov/cover_low_res.jpg");
+                e8.setHighResCoverImagePath("books/the_brothers_karamazov/cover_high_res.jpg");
+                e8.setAdditionalImages(Arrays.asList(
                         "books/the_brothers_karamazov/additional1.jpg",
                         "books/the_brothers_karamazov/additional2.jpg"
                 ));
-                long eid8 = db.bookDao().insert(b8);
+                long eid8 = db.bookDao().insert(e8);
                 db.bookTagDao().insert(new BookTag(eid8, editorsTagId));
 
                 Book e9 = new Book();
