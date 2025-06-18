@@ -1,5 +1,6 @@
 package com.example.readery.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,13 +9,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.readery.R;
 import com.example.readery.data.Book;
 import com.example.readery.utils.ImagePagerAdapter;
+import com.example.readery.utils.SettingsManager;
 import com.example.readery.viewmodel.BookDetailsViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
- * Активити для отображения детальной информации о книге.
- * ActionBar скрыт, все текстовые данные поддерживают локализацию.
+ * активность для отображения детальной информации о книге.
+ * actionbar скрыт, все текстовые данные поддерживают локализацию.
  */
 public class BookDetailsActivity extends AppCompatActivity {
     private BookDetailsViewModel viewModel;
@@ -24,26 +29,26 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        // Скрываем ActionBar
+        // скрываем actionbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        // Получаем ID книги из Intent
+        // получаем id книги из intent
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
-            finish(); // Закрываем активити, если ID книги не передан
+            finish(); // закрываем активность, если id книги не передан
             return;
         }
 
-        // Инициализируем ViewModel
+        // инициализируем viewmodel
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
-        // Наблюдаем за данными книги
+        // наблюдаем за данными книги
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // Устанавливаем переведенные данные книги
+                // устанавливаем переведенные данные книги
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle(this));
 
@@ -53,27 +58,40 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView descriptionView = findViewById(R.id.book_description);
                 descriptionView.setText(book.getDescription(this));
 
-                // Настраиваем ViewPager для отображения изображений
+                // настраиваем viewpager для отображения изображений
                 ViewPager imagePager = findViewById(R.id.image_pager);
                 List<String> allImages = new ArrayList<>();
 
-                // Добавляем изображение высокого разрешения, если оно есть
+                // добавляем изображение высокого разрешения, если оно есть
                 if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
                     allImages.add(book.getHighResCoverImagePath());
                 }
-                // В качестве запасного варианта добавляем обычное изображение обложки
+                // в качестве запасного варианта добавляем обычное изображение обложки
                 else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
                     allImages.add(book.getCoverImagePath());
                 }
-                // Добавляем дополнительные изображения, если они есть
+                // добавляем дополнительные изображения, если они есть
                 if (book.getAdditionalImages() != null) {
                     allImages.addAll(book.getAdditionalImages());
                 }
 
-                // Устанавливаем адаптер для ViewPager
+                // устанавливаем адаптер для viewpager
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        // устанавливаем локаль на основе сохраненных настроек
+        SettingsManager settingsManager = SettingsManager.getInstance(base);
+        String lang = settingsManager.getLanguage();
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        android.content.res.Configuration config = new android.content.res.Configuration();
+        config.setLocale(locale);
+        base = base.createConfigurationContext(config);
+        super.attachBaseContext(base);
     }
 }
