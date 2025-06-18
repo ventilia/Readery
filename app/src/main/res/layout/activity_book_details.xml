@@ -10,15 +10,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:animateLayoutChanges="true">
 
+        <!-- viewpager для изображений -->
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/image_pager"
             android:layout_width="250dp"
             android:layout_height="400dp"
             android:layout_gravity="center_horizontal" />
 
+        <!-- индикатор листания -->
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:ci_width="10dp"
+            app:ci_height="10dp"
+            app:ci_margin="10dp"
+            app:ci_drawable="@drawable/circle_selected"
+            app:ci_drawable_unselected="@drawable/circle_unselected" />
 
+        <!-- заголовок книги -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/book_title"
@@ -30,21 +43,23 @@
             android:textColor="@color/black"
             android:gravity="center" />
 
+        <!-- автор книги -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/book_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/gray" />
+            android:textColor="@color/black" />
 
+        <!-- описание книги -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/book_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/gray" />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 </ScrollView>

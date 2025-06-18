@@ -50,7 +50,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     // или kapt("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.preference:preference:1.2.1")
-
+    implementation ("me.relex:circleindicator:2.1.6")
     // Lifecycle (LiveData + ViewModel)
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.6")
