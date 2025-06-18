@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ридери</string>
+    <string name="app_name">Readery</string>
     <string name="title_home">Главная</string>
     <string name="title_all_books">Все книги</string>
     <string name="title_library">Библиотека</string>
-    <string name="title_settings">Настройки</string>
+    <string name="title_settings">Настройки / Инфо</string>
     <string name="search_books">Поиск книг...</string>
     <string name="book_cover">Обложка книги</string>
     <string name="filter_books">Фильтр</string>
@@ -12,6 +12,12 @@
     <string name="search_hint">поиск</string>
     <string name="tag_popular">Популярные</string>
     <string name="tag_editors_choice">Выбор редакции</string>
+    <string name="settings_title">Настройки</string>
+    <string name="info_title">Информация</string>
+    <string name="language">Язык</string>
+    <string name="github">GitHub</string>
+    <string name="github_title">Наш GitHub</string>
+    <string name="github_description">Внесите свой вклад в проект</string>
     <string-array name="filter_types">
         <item>Название</item>
         <item>Автор</item>

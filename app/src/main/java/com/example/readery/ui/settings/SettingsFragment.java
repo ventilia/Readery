@@ -1,6 +1,8 @@
 package com.example.readery.ui.settings;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,7 @@ import com.example.readery.R;
 import com.example.readery.utils.SettingsManager;
 
 /**
- * Фрагмент для экрана "Settings" с настройкой языка.
+ * Фрагмент для экрана "Настройки / Инфо" с настройкой языка и информацией о проекте.
  */
 public class SettingsFragment extends Fragment {
 
@@ -21,16 +23,20 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        // Настройка языка
         LinearLayout languageSetting = root.findViewById(R.id.language_setting);
         TextView languageText = root.findViewById(R.id.language_text);
-
-        // Установка текущего языка
         SettingsManager settingsManager = SettingsManager.getInstance(getContext());
         String currentLang = settingsManager.getLanguage();
         languageText.setText("en".equals(currentLang) ? "English" : "Русский");
-
-        // Обработчик клика для выбора языка
         languageSetting.setOnClickListener(v -> showLanguageDialog(settingsManager, languageText));
+
+        // Блок GitHub
+        LinearLayout githubBlock = root.findViewById(R.id.github_block);
+        githubBlock.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ventilia/Readery"));
+            startActivity(intent);
+        });
 
         return root;
     }
