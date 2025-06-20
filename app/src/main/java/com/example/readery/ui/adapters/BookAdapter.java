@@ -17,36 +17,25 @@ import com.example.readery.data.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Адаптер для отображения списка книг в RecyclerView с поддержкой локализации.
- */
+
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
     private List<Book> books = new ArrayList<>(); // начальное значение - пустой список
     private OnBookClickListener listener;
     private Context context;
 
-    /**
-     * Интерфейс для обработки кликов по книге.
-     */
+
     public interface OnBookClickListener {
         void onBookClick(Book book);
     }
 
-    /**
-     * конструктор адаптера
-     * @param listener обработчик кликов по книге
-     * @param context контекст приложения
-     */
+
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
         this.context = context;
     }
 
-    /**
-     * устанавливает список книг и обновляет отображение
-     * @param books список книг для отображения, может быть null
-     */
+
     public void setBooks(List<Book> books) {
         this.books = (books != null) ? books : new ArrayList<>(); // если null, используем пустой список
         notifyDataSetChanged();
@@ -67,7 +56,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.title.setText(book.getTitle(context));
         holder.author.setText(book.getAuthor(context));
 
-        // загружаем обложку книги с помощью Glide
+
         String coverPath = book.getCoverImagePath();
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -95,18 +84,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         });
     }
 
-    /**
-     * возвращает количество элементов в списке
-     * @return размер списка books или 0, если список null
-     */
+
     @Override
     public int getItemCount() {
-        return books != null ? books.size() : 0; // безопасная проверка на null
+        return books != null ? books.size() : 0;
     }
 
-    /**
-     * ViewHolder для хранения элементов карточки книги.
-     */
+
     static class BookViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView author;

@@ -47,24 +47,24 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }, requireContext());
 
-        // RecyclerView для "Новые"
+
         RecyclerView recyclerViewNew = root.findViewById(R.id.recycler_view_new);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerViewNew.setLayoutManager(gridLayoutManager);
         recyclerViewNew.setAdapter(newBooksAdapter);
 
-        // RecyclerView для "Популярные"
+
         RecyclerView recyclerViewPopular = root.findViewById(R.id.recycler_view_popular);
         recyclerViewPopular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewPopular.setAdapter(popularBooksAdapter);
 
-        // RecyclerView для "Выбор редакции"
+
         RecyclerView recyclerViewEditorsChoice = root.findViewById(R.id.recycler_view_editors_choice);
         recyclerViewEditorsChoice.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewEditorsChoice.setAdapter(editorsChoiceBooksAdapter);
 
-        // Подписка на данные из ViewModel
+
         viewModel.getNewBooks().observe(getViewLifecycleOwner(), newBooksAdapter::setBooks);
         viewModel.getPopularBooks().observe(getViewLifecycleOwner(), popularBooksAdapter::setBooks);
         viewModel.getEditorsChoiceBooks().observe(getViewLifecycleOwner(), editorsChoiceBooksAdapter::setBooks);

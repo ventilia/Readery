@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Базовая тема приложения -->
+
     <style name="Base.Theme.Readery" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Настройки базовой темы -->
     </style>
 
-    <!-- Стиль для текста заголовка тулбара -->
+
     <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/bookerly</item>
     </style>
 
-    <!-- Стиль для тулбара -->
+
     <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="titleTextStyle">@style/ActionBarTitleText</item>
     </style>
 
-    <!-- Стиль для текста нижней навигации -->
+
     <style name="BottomNavigationTextStyle" parent="TextAppearance.AppCompat.Caption">
         <item name="android:fontFamily">@font/bookerly</item>
         <item name="android:textColor">@color/nav_item_color</item>
     </style>
 
-    <!-- Тема приложения -->
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>

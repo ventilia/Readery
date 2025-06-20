@@ -10,7 +10,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Секция "Новые" -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/section_new_title"
@@ -29,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <!-- Секция "Популярные" -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/section_popular_title"
@@ -47,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <!-- Секция "Выбор редакции" -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:id="@+id/section_editors_choice_title"

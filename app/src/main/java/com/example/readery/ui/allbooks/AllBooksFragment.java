@@ -27,8 +27,8 @@ public class AllBooksFragment extends Fragment {
     private AllBooksViewModel viewModel;
     private RecyclerView recyclerView;
     private BookAdapter adapter;
-    private String currentFilterType = "title"; // По умолчанию фильтр по названию
-    private String currentFilterOrder = "ASC"; // По умолчанию прямой порядок
+    private String currentFilterType = "title";
+    private String currentFilterOrder = "ASC";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +37,6 @@ public class AllBooksFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recycler_view_all_books);
 
-        // Настройка GridLayoutManager с динамическим количеством колонок
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int screenWidthPx = metrics.widthPixels;
         final float MIN_ITEM_WIDTH_DP = 120f;

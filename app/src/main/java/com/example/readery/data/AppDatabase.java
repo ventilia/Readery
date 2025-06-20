@@ -19,7 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "readery-database")
-                    .fallbackToDestructiveMigration() // Разрушающая миграция для простоты
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return instance;

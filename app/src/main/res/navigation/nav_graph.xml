@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/navigation_home">
 
-    <!-- Фрагмент Home -->
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.readery.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
-    <!-- Фрагмент All Books -->
+
     <fragment
         android:id="@+id/navigation_all_books"
         android:name="com.example.readery.ui.allbooks.AllBooksFragment"
         android:label="@string/title_all_books"
         tools:layout="@layout/fragment_all_books" />
 
-    <!-- Фрагмент Library -->
+
     <fragment
         android:id="@+id/navigation_library"
         android:name="com.example.readery.ui.library.LibraryFragment"
         android:label="@string/title_library"
         tools:layout="@layout/fragment_library" />
 
-    <!-- Фрагмент Settings -->
+
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.example.readery.ui.settings.SettingsFragment"

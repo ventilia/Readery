@@ -10,7 +10,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Заголовок секции "Настройки" -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-        <!-- Настройка языка -->
+
         <LinearLayout
             android:id="@+id/language_setting"
             android:layout_width="match_parent"
@@ -62,7 +61,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Разделитель -->
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -70,7 +69,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Заголовок секции "Информация" -->
         <TextView
 
             android:fontFamily="@font/bookerly"
@@ -82,7 +80,6 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-        <!-- Блок GitHub -->
         <LinearLayout
             android:id="@+id/github_block"
             android:layout_width="match_parent"

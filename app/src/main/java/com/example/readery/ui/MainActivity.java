@@ -13,9 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.graphics.drawable.ColorDrawable;
 import java.util.Locale;
 
-/**
- * Главная активити приложения с нижней навигацией и поддержкой смены языка.
- */
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Настройка BottomNavigationView
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        // Установка кремового цвета для ActionBar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.cream_background)));
         }

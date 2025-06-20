@@ -10,7 +10,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Заголовок секции -->
         <TextView
             android:fontFamily="@font/bookerly"
             android:layout_width="match_parent"
@@ -21,6 +20,5 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-        <!-- Здесь в будущем будет содержимое библиотеки -->
     </LinearLayout>
 </ScrollView>

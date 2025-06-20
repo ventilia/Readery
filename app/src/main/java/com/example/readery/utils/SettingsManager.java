@@ -3,9 +3,7 @@ package com.example.readery.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Класс для управления настройками приложения через SharedPreferences.
- */
+
 public class SettingsManager {
     private static SettingsManager instance;
     private SharedPreferences prefs;
@@ -23,18 +21,12 @@ public class SettingsManager {
         return instance;
     }
 
-    /**
-     * Устанавливает язык приложения.
-     * @param lang Код языка ("en" или "ru")
-     */
+
     public void setLanguage(String lang) {
         prefs.edit().putString(KEY_LANGUAGE, lang).apply();
     }
 
-    /**
-     * Получает текущий язык приложения.
-     * @return Код языка ("en" или "ru"), по умолчанию "en"
-     */
+
     public String getLanguage() {
         return prefs.getString(KEY_LANGUAGE, "en");
     }

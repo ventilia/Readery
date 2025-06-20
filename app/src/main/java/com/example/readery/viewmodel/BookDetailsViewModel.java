@@ -10,7 +10,7 @@ public class BookDetailsViewModel extends AndroidViewModel {
     private BookRepository repository;
     private LiveData<Book> book;
 
-    // конструктор
+
     public BookDetailsViewModel(Application application) {
         super(application);
         repository = new BookRepository(application);

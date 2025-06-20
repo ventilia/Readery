@@ -6,18 +6,18 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "book_tags")
 public class BookTag {
     @PrimaryKey(autoGenerate = true)
-    private long id; // уникальный идентификатор для связи
+    private long id;
 
-    private long bookId; // id книги
-    private long tagId;  // id тега
+    private long bookId;
+    private long tagId;
 
-    // конструктор
+
     public BookTag(long bookId, long tagId) {
         this.bookId = bookId;
         this.tagId = tagId;
     }
 
-    // геттеры и сеттеры
+
     public long getId() {
         return id;
     }

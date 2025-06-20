@@ -6,5 +6,5 @@ import androidx.room.Insert;
 @Dao
 public interface BookTagDao {
     @Insert
-    long insert(BookTag bookTag); // изменен на long для возврата id
+    long insert(BookTag bookTag);
 }

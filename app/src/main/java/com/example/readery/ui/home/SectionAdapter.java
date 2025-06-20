@@ -41,7 +41,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
         holder.title.setText(sec.title);
 
         if ("New".equals(sec.title)) {
-            // 2 колонки, горизонтальная прокрутка
+
             GridLayoutManager glm = new GridLayoutManager(
                     context,
                     2,
@@ -50,7 +50,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionV
             );
             holder.recycler.setLayoutManager(glm);
         } else {
-            // обычный горизонтальный список
+
             holder.recycler.setLayoutManager(
                     new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             );

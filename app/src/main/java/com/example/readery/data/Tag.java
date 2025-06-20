@@ -6,15 +6,15 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tags")
 public class Tag {
     @PrimaryKey(autoGenerate = true)
-    private long id; // изменен на long
+    private long id;
     private String name;
 
-    // конструктор
+
     public Tag(String name) {
         this.name = name;
     }
 
-    // геттеры и сеттеры
+
     public long getId() {
         return id;
     }

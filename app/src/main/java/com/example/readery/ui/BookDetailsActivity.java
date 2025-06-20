@@ -21,10 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * активность для отображения детальной информации о книге.
- * actionbar скрыт, текст поддерживает локализацию и сворачивание.
- */
+
+
 public class BookDetailsActivity extends AppCompatActivity {
     private BookDetailsViewModel viewModel;
 
@@ -33,26 +31,26 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        // скрываем actionbar
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        // получаем id книги из intent
+        // получаем id книги
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
-            finish(); // закрываем активность, если id не передан
+            finish();
             return;
         }
 
-        // инициализируем viewmodel
+
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
-        // наблюдаем за данными книги
+
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // устанавливаем переведенные данные
+
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle(this));
 
@@ -62,39 +60,33 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView descriptionView = findViewById(R.id.book_description);
                 setupDescription(descriptionView, book.getDescription(this));
 
-                // настраиваем viewpager для изображений
+
                 ViewPager imagePager = findViewById(R.id.image_pager);
                 List<String> allImages = new ArrayList<>();
 
-                // добавляем изображение высокого разрешения
+
                 if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
                     allImages.add(book.getHighResCoverImagePath());
                 }
-                // запасной вариант - обычная обложка
+
                 else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
                     allImages.add(book.getCoverImagePath());
                 }
-                // дополнительные изображения
+
                 if (book.getAdditionalImages() != null) {
                     allImages.addAll(book.getAdditionalImages());
                 }
 
-                // устанавливаем адаптер для viewpager
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
                 imagePager.setAdapter(pagerAdapter);
 
-                // связываем индикатор с viewpager
                 CircleIndicator indicator = findViewById(R.id.indicator);
                 indicator.setViewPager(imagePager);
             }
         });
     }
 
-    /**
-     * настраивает описание с возможностью сворачивания/разворачивания.
-     * @param descriptionView TextView для отображения текста
-     * @param fullDescription полное описание книги
-     */
+
     private void setupDescription(TextView descriptionView, String fullDescription) {
         String[] words = fullDescription.split("\\s+");
         if (words.length > 25) {
@@ -130,7 +122,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        // устанавливаем локаль на основе настроек
+
         SettingsManager settingsManager = SettingsManager.getInstance(base);
         String lang = settingsManager.getLanguage();
         Locale locale = new Locale(lang);
