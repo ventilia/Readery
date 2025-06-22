@@ -16,7 +16,6 @@ import com.example.readery.utils.ImagePagerAdapter;
 import com.example.readery.utils.SettingsManager;
 import com.example.readery.viewmodel.BookDetailsViewModel;
 import me.relex.circleindicator.CircleIndicator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +33,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        // Получаем id книги
+        // получение id книги из intent
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
             finish();
@@ -44,8 +43,14 @@ public class BookDetailsActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
+        // наблюдение за данными книги
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
+                // установка заголовка с учетом локализации
+                TextView headerTitle = findViewById(R.id.header_title);
+                headerTitle.setText(book.getTitle(this));
+
+                // установка остальных данных
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle(this));
 
@@ -55,17 +60,16 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView descriptionView = findViewById(R.id.book_description);
                 setupDescription(descriptionView, book.getDescription(this));
 
+                // настройка ViewPager для изображений
                 ViewPager imagePager = findViewById(R.id.image_pager);
                 List<String> allImages = new ArrayList<>();
-
-                if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
-                    allImages.add(book.getHighResCoverImagePath());
-                } else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
-                    allImages.add(book.getCoverImagePath());
+                if (book.getHighResCoverImagePath(this) != null && !book.getHighResCoverImagePath(this).isEmpty()) {
+                    allImages.add(book.getHighResCoverImagePath(this));
+                } else if (book.getCoverImagePath(this) != null && !book.getCoverImagePath(this).isEmpty()) {
+                    allImages.add(book.getCoverImagePath(this));
                 }
-
-                if (book.getAdditionalImages() != null) {
-                    allImages.addAll(book.getAdditionalImages());
+                if (book.getAdditionalImages(this) != null) {
+                    allImages.addAll(book.getAdditionalImages(this));
                 }
 
                 ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(this, allImages);
@@ -76,11 +80,12 @@ public class BookDetailsActivity extends AppCompatActivity {
             }
         });
 
-        // Находим кнопку "назад" и устанавливаем обработчик клика
+        // обработчик кнопки "назад"
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
     }
 
+    // настройка отображения описания с возможностью развернуть/свернуть
     private void setupDescription(TextView descriptionView, String fullDescription) {
         String[] words = fullDescription.split("\\s+");
         if (words.length > 25) {
@@ -114,6 +119,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // настройка локализации контекста
     @Override
     protected void attachBaseContext(Context base) {
         SettingsManager settingsManager = SettingsManager.getInstance(base);

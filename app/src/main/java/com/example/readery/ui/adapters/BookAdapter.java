@@ -13,31 +13,25 @@ import com.bumptech.glide.Glide;
 import com.example.readery.R;
 import com.example.readery.animation.CardAnimationHelper;
 import com.example.readery.data.Book;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
-
-    private List<Book> books = new ArrayList<>(); // начальное значение - пустой список
+    private List<Book> books = new ArrayList<>();
     private OnBookClickListener listener;
     private Context context;
-
 
     public interface OnBookClickListener {
         void onBookClick(Book book);
     }
-
 
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
         this.context = context;
     }
 
-
     public void setBooks(List<Book> books) {
-        this.books = (books != null) ? books : new ArrayList<>(); // если null, используем пустой список
+        this.books = (books != null) ? books : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -52,12 +46,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = books.get(position);
 
-        // устанавливаем локализованные данные
+        // установка локализованных данных
         holder.title.setText(book.getTitle(context));
         holder.author.setText(book.getAuthor(context));
 
-
-        String coverPath = book.getCoverImagePath();
+        // загрузка обложки с учетом локализации
+        String coverPath = book.getCoverImagePath(context);
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load("file:///android_asset/" + coverPath)
@@ -84,12 +78,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         });
     }
 
-
     @Override
     public int getItemCount() {
         return books != null ? books.size() : 0;
     }
-
 
     static class BookViewHolder extends RecyclerView.ViewHolder {
         TextView title;
