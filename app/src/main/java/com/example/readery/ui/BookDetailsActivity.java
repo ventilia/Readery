@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,8 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-
-
 public class BookDetailsActivity extends AppCompatActivity {
     private BookDetailsViewModel viewModel;
 
@@ -31,26 +30,22 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        // получаем id книги
+        // Получаем id книги
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
             finish();
             return;
         }
 
-
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
-
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-
                 TextView titleView = findViewById(R.id.book_title);
                 titleView.setText(book.getTitle(this));
 
@@ -60,16 +55,12 @@ public class BookDetailsActivity extends AppCompatActivity {
                 TextView descriptionView = findViewById(R.id.book_description);
                 setupDescription(descriptionView, book.getDescription(this));
 
-
                 ViewPager imagePager = findViewById(R.id.image_pager);
                 List<String> allImages = new ArrayList<>();
 
-
                 if (book.getHighResCoverImagePath() != null && !book.getHighResCoverImagePath().isEmpty()) {
                     allImages.add(book.getHighResCoverImagePath());
-                }
-
-                else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
+                } else if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
                     allImages.add(book.getCoverImagePath());
                 }
 
@@ -84,8 +75,11 @@ public class BookDetailsActivity extends AppCompatActivity {
                 indicator.setViewPager(imagePager);
             }
         });
-    }
 
+        // Находим кнопку "назад" и устанавливаем обработчик клика
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
+    }
 
     private void setupDescription(TextView descriptionView, String fullDescription) {
         String[] words = fullDescription.split("\\s+");
@@ -122,7 +116,6 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-
         SettingsManager settingsManager = SettingsManager.getInstance(base);
         String lang = settingsManager.getLanguage();
         Locale locale = new Locale(lang);
