@@ -35,8 +35,8 @@ public class DatabaseInitializer {
                 b3.setAuthorRu("Джордж Оруэлл");
                 b3.setDescriptionEn("A dystopian novel about a totalitarian society.");
                 b3.setDescriptionRu("Дистопический роман о тоталитарном обществе.");
-                b3.setPdfPathEn("books/1984/book_en.pdf");
-                b3.setPdfPathRu("books/1984/book_ru.pdf");
+             //  b3.setPdfPathEn("books/1984/book_en.pdf");
+              //  b3.setPdfPathRu("books/1984/book_ru.pdf");
                 b3.setCoverImagePathEn("books/1984/cover_low_res_en.jpg");
                 b3.setCoverImagePathRu("books/1984/cover_low_res_ru.jpg");
                 b3.setHighResCoverImagePathEn("books/1984/cover_high_res_en.jpg");

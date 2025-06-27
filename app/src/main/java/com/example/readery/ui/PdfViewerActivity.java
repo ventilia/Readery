@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.readery.R;
 import com.github.barteksc.pdfviewer.PDFView;
 
-
 import java.io.File;
 
 public class PdfViewerActivity extends AppCompatActivity {
@@ -22,6 +21,9 @@ public class PdfViewerActivity extends AppCompatActivity {
         if (pdfPath != null) {
             File pdfFile = new File(pdfPath);
             pdfView.fromFile(pdfFile)
+                    .enableSwipe(true)        // листание свайпом
+                    //.swipeHorizontal(false)   // вертикальное пролистывание
+                    .enableDoubletap(true)    // двойной тап – зум
                     .load();
         }
     }

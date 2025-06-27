@@ -39,24 +39,24 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.8.1")
     implementation("androidx.navigation:navigation-ui:2.8.1")
 
-    // AppCompat, Material, Activity, ConstraintLayout, RecyclerView
+    // UI & Layouts
     implementation(libs.appcompat)
     implementation("com.google.android.material:material:1.12.0")
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
 
-    // Room 2.6.1
+    // Room
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("androidx.preference:preference:1.2.1")
     implementation("me.relex:circleindicator:2.1.6")
 
-    // Lifecycle (LiveData + ViewModel)
+    // Lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.6")
 
-    // Glide и Gson
+    // Glide & Gson
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.code.gson:gson:2.8.8")
 
@@ -64,14 +64,14 @@ dependencies {
     implementation(libs.hilt.android)
     annotationProcessor(libs.hilt.compiler)
 
-    // Firebase Realtime Database
+    // Firebase Realtime DB
     implementation("com.google.firebase:firebase-database:20.1.0")
 
-    // Для загрузки файлов (HTTP-клиент)
+    // HTTP-клиент
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
-    // PDF Viewer
-    implementation("com.github.barteksc:android-pdf-viewer:2.8.2")
+    // **PDF Viewer** через JitPack (ветка v1.x)
+    implementation("com.github.barteksc:AndroidPdfViewerV1:1.6.0")
 
     // Тесты
     testImplementation(libs.junit)
