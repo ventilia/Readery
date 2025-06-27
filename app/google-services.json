@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "248156730857",
+    "project_id": "readery-373e8",
+    "storage_bucket": "readery-373e8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248156730857:android:d0300a2a85dd1e1a790778",
+        "android_client_info": {
+          "package_name": "com.example.readery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTvfoXO6apv8O3_SRe6yQHL_Koi7BfN9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

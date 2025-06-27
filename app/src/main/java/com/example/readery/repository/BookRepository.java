@@ -32,4 +32,8 @@ public class BookRepository {
     public LiveData<List<Book>> searchBooks(String query, String filterType, String filterOrder, String language) {
         return bookDao.searchBooks("%" + query + "%", filterType, filterOrder, language);
     }
+
+    public LiveData<List<Book>> getDownloadedBooks() {
+        return bookDao.getDownloadedBooks();
+    }
 }

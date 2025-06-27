@@ -3,6 +3,7 @@ package com.example.readery.data;
 import android.content.Context;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 import java.util.List;
 
 @Entity(tableName = "books")
@@ -15,65 +16,18 @@ public class Book {
     private String authorRu;
     private String descriptionEn;
     private String descriptionRu;
-    private String pdfPathEn; // путь к PDF на английском
-    private String pdfPathRu; // путь к PDF на русском
-    private String coverImagePathEn; // обложка на английском
-    private String coverImagePathRu; // обложка на русском
-    private String highResCoverImagePathEn; // обложка высокого разрешения на английском
-    private String highResCoverImagePathRu; // обложка высокого разрешения на русском
-    private List<String> additionalImagesEn; // дополнительные изображения на английском
-    private List<String> additionalImagesRu; // дополнительные изображения на русском
+    private String coverImagePathEn;
+    private String coverImagePathRu;
+    private String highResCoverImagePathEn;
+    private String highResCoverImagePathRu;
+    private List<String> additionalImagesEn;
+    private List<String> additionalImagesRu;
+    private boolean isDownloaded; // Добавлено поле
 
-    public Book() {
-    }
+    // Конструктор по умолчанию для Room
+    public Book() {}
 
-    // получение заголовка с учетом локализации
-    public String getTitle(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? titleRu : titleEn;
-    }
-
-    // получение автора с учетом локализации
-    public String getAuthor(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? authorRu : authorEn;
-    }
-
-    // получение описания с учетом локализации
-    public String getDescription(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        if ("ru".equals(lang)) {
-            return descriptionRu != null ? descriptionRu : descriptionEn;
-        } else {
-            return descriptionEn != null ? descriptionEn : descriptionRu;
-        }
-    }
-
-    // получение пути к PDF с учетом локализации
-    public String getPdfPath(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? pdfPathRu : pdfPathEn;
-    }
-
-    // получение пути к обложке с учетом локализации
-    public String getCoverImagePath(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? coverImagePathRu : coverImagePathEn;
-    }
-
-    // получение пути к обложке высокого разрешения с учетом локализации
-    public String getHighResCoverImagePath(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? highResCoverImagePathRu : highResCoverImagePathEn;
-    }
-
-    // получение дополнительных изображений с учетом локализации
-    public List<String> getAdditionalImages(Context context) {
-        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
-        return "ru".equals(lang) ? additionalImagesRu : additionalImagesEn;
-    }
-
-    // геттеры и сеттеры
+    // Геттеры и сеттеры
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
     public String getTitleEn() { return titleEn; }
@@ -88,10 +42,6 @@ public class Book {
     public void setDescriptionEn(String descriptionEn) { this.descriptionEn = descriptionEn; }
     public String getDescriptionRu() { return descriptionRu; }
     public void setDescriptionRu(String descriptionRu) { this.descriptionRu = descriptionRu; }
-    public String getPdfPathEn() { return pdfPathEn; }
-    public void setPdfPathEn(String pdfPathEn) { this.pdfPathEn = pdfPathEn; }
-    public String getPdfPathRu() { return pdfPathRu; }
-    public void setPdfPathRu(String pdfPathRu) { this.pdfPathRu = pdfPathRu; }
     public String getCoverImagePathEn() { return coverImagePathEn; }
     public void setCoverImagePathEn(String coverImagePathEn) { this.coverImagePathEn = coverImagePathEn; }
     public String getCoverImagePathRu() { return coverImagePathRu; }
@@ -104,4 +54,37 @@ public class Book {
     public void setAdditionalImagesEn(List<String> additionalImagesEn) { this.additionalImagesEn = additionalImagesEn; }
     public List<String> getAdditionalImagesRu() { return additionalImagesRu; }
     public void setAdditionalImagesRu(List<String> additionalImagesRu) { this.additionalImagesRu = additionalImagesRu; }
+    public boolean isDownloaded() { return isDownloaded; }
+    public void setDownloaded(boolean isDownloaded) { this.isDownloaded = isDownloaded; }
+
+    // Методы для локализации
+    public String getTitle(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? titleRu : titleEn;
+    }
+
+    public String getAuthor(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? authorRu : authorEn;
+    }
+
+    public String getDescription(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? (descriptionRu != null ? descriptionRu : descriptionEn) : (descriptionEn != null ? descriptionEn : descriptionRu);
+    }
+
+    public String getCoverImagePath(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? coverImagePathRu : coverImagePathEn;
+    }
+
+    public String getHighResCoverImagePath(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? highResCoverImagePathRu : highResCoverImagePathEn;
+    }
+
+    public List<String> getAdditionalImages(Context context) {
+        String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
+        return "ru".equals(lang) ? additionalImagesRu : additionalImagesEn;
+    }
 }

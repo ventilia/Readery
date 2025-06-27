@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Header Background -->
+    <!-- header background -->
     <ImageView
         android:id="@+id/header_background"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Back Button -->
+    <!-- back button -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="@id/header_background"
         android:layout_marginStart="16dp" />
 
-    <!-- Header Title -->
+    <!-- header title -->
     <TextView
         android:fontFamily="@font/bookerly"
         android:id="@+id/header_title"
@@ -41,7 +41,8 @@
         app:layout_constraintBottom_toBottomOf="@id/header_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-    <!-- Scrollable Content -->
+
+    <!-- scrollable content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -75,7 +76,7 @@
                 app:ci_drawable="@drawable/circle_selected"
                 app:ci_drawable_unselected="@drawable/circle_unselected" />
 
-            <!-- Book Title -->
+            <!-- book title -->
             <TextView
                 android:fontFamily="@font/bookerly"
                 android:id="@+id/book_title"
@@ -103,6 +104,20 @@
                 android:textSize="14sp"
                 android:textColor="@color/black" />
 
+            <Button
+                android:id="@+id/add_to_library_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Добавить в библиотеку" />
+
+            <ProgressBar
+                android:id="@+id/download_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyleHorizontal" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

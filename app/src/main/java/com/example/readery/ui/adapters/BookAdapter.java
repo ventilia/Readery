@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.readery.R;
 import com.example.readery.animation.CardAnimationHelper;
+import com.example.readery.data.AppDatabase;
 import com.example.readery.data.Book;
+import com.example.readery.data.DownloadedBook;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_library, parent, false);
         return new BookViewHolder(view);
     }
 
@@ -46,11 +49,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = books.get(position);
 
-        // установка локализованных данных
         holder.title.setText(book.getTitle(context));
         holder.author.setText(book.getAuthor(context));
 
-        // загрузка обложки с учетом локализации
         String coverPath = book.getCoverImagePath(context);
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -60,7 +61,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .into(holder.cover);
         }
 
-        // обработка нажатий с анимацией
+        AppDatabase db = AppDatabase.getInstance(context);
+        DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
+        if (downloadedBook != null) {
+            holder.actionButton.setText("Читать");
+            holder.actionButton.setOnClickListener(v -> listener.onBookClick(book));
+        } else {
+            holder.actionButton.setText("Добавить");
+            holder.actionButton.setOnClickListener(null); // не используется в библиотеке
+        }
+
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -87,12 +97,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         TextView title;
         TextView author;
         ImageView cover;
+        Button actionButton;
 
         BookViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
             cover = itemView.findViewById(R.id.book_cover);
+            actionButton = itemView.findViewById(R.id.action_button);
         }
     }
 }

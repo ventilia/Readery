@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.readery">
 
+    <!-- Разрешение на запись во внешнее хранилище -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".ReaderyApplication"
         android:allowBackup="true"
@@ -25,6 +28,7 @@
         <activity
             android:name=".ui.BookDetailsActivity"
             android:exported="false" />
+        <activity android:name=".ui.PdfViewerActivity" />
     </application>
 
 </manifest>

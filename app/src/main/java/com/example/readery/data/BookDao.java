@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
 import java.util.List;
 
 @Dao
@@ -36,4 +37,7 @@ public interface BookDao {
 
     @Query("SELECT COUNT(*) FROM books")
     int getBookCount();
+
+    @Query("SELECT * FROM books WHERE isDownloaded = 1")
+    LiveData<List<Book>> getDownloadedBooks();
 }
