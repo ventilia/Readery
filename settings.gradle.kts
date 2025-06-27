@@ -5,10 +5,9 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        // версии плагинов не менялись
-        alias(libs.plugins.android.application) version "x.y.z" apply false
-        alias(libs.plugins.hilt.android)       version "x.y.z" apply false
-        id("com.google.gms.google-services")   version "4.3.15" apply false
+        id("com.android.application") version "8.1.0" apply false
+        id("com.google.gms.google-services") version "4.3.15" apply false
+        id("com.google.dagger.hilt.android") version "2.51.1" apply false
     }
 }
 
@@ -17,8 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // ← добавили JitPack, чтобы подтягивать AndroidPdfViewerV1
-        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://jitpack.io") } // для AndroidPdfViewerV1
     }
 }
 

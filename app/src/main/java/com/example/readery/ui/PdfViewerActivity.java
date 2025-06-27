@@ -22,7 +22,6 @@ public class PdfViewerActivity extends AppCompatActivity {
             File pdfFile = new File(pdfPath);
             pdfView.fromFile(pdfFile)
                     .enableSwipe(true)        // листание свайпом
-                    //.swipeHorizontal(false)   // вертикальное пролистывание
                     .enableDoubletap(true)    // двойной тап – зум
                     .load();
         }
