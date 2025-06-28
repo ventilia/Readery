@@ -109,7 +109,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Добавить в библиотеку" />
+                android:background="@drawable/button_background"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:text="@string/add_to_library" />
 
             <ProgressBar
                 android:id="@+id/download_progress_bar"

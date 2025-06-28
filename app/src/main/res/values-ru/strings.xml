@@ -18,6 +18,8 @@
     <string name="github">GitHub</string>
     <string name="github_title">Наш GitHub</string>
     <string name="github_description">Внесите свой вклад в проект</string>
+    <string name="add_to_library">Добавить в библиотеку</string>
+    <string name="read">Читать</string>
     <string-array name="filter_types">
         <item>Название</item>
         <item>Автор</item>

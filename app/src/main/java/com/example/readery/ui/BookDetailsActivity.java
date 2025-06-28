@@ -133,7 +133,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Проверяет статус загрузки книги и настраивает кнопку.
+     * Проверяет статус загрузки книги и настраивает кнопку с учетом локализации.
      */
     private void checkDownloadStatus(Book book, Button addToLibraryButton) {
         executorService.execute(() -> {
@@ -141,10 +141,10 @@ public class BookDetailsActivity extends AppCompatActivity {
             DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
             mainHandler.post(() -> {
                 if (downloadedBook != null) {
-                    addToLibraryButton.setText("Читать");
+                    addToLibraryButton.setText(getString(R.string.read));
                     addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(this)));
                 } else {
-                    addToLibraryButton.setText("Добавить в библиотеку");
+                    addToLibraryButton.setText(getString(R.string.add_to_library));
                     addToLibraryButton.setOnClickListener(v -> downloadBook(book));
                 }
             });
@@ -186,7 +186,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                                     Toast.makeText(BookDetailsActivity.this, "Книга добавлена в библиотеку", Toast.LENGTH_SHORT).show();
                                     downloadProgressBar.setVisibility(View.GONE);
                                     Button addToLibraryButton = findViewById(R.id.add_to_library_button);
-                                    addToLibraryButton.setText("Читать");
+                                    addToLibraryButton.setText(getString(R.string.read));
                                     addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(BookDetailsActivity.this)));
                                 });
                             } catch (IOException e) {
