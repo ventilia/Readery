@@ -23,6 +23,7 @@ import com.example.readery.data.Book;
 import com.example.readery.data.DownloadedBook;
 import com.example.readery.utils.ImagePagerAdapter;
 import com.example.readery.viewmodel.BookDetailsViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +52,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     private ProgressBar downloadProgressBar;
     private TextView bookSizeText;
     private Button addToLibraryButton;
-    private Button deleteButton;
+    private FloatingActionButton deleteButton;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -161,24 +162,41 @@ public class BookDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Отображает размер PDF-файла.
+     * Отображает общий размер двух PDF-файлов (английского и русского).
      */
     private void showBookSize(DownloadedBook downloadedBook) {
-        String pdfPath = downloadedBook.getPdfPath(this);
-        if (pdfPath != null) {
-            File pdfFile = new File(pdfPath);
-            if (pdfFile.exists()) {
-                long fileSizeBytes = pdfFile.length();
-                double fileSizeMB = fileSizeBytes / (1024.0 * 1024.0);
-                String sizeText = String.format(Locale.getDefault(), getString(R.string.book_size), fileSizeMB);
-                bookSizeText.setText(sizeText);
-                bookSizeText.setVisibility(View.VISIBLE);
+        long totalSizeBytes = 0;
+
+        // Проверяем английский PDF
+        String pdfPathEn = downloadedBook.getPdfPathEn();
+        if (pdfPathEn != null) {
+            File pdfFileEn = new File(pdfPathEn);
+            if (pdfFileEn.exists()) {
+                totalSizeBytes += pdfFileEn.length();
             }
+        }
+
+        // Проверяем русский PDF
+        String pdfPathRu = downloadedBook.getPdfPathRu();
+        if (pdfPathRu != null) {
+            File pdfFileRu = new File(pdfPathRu);
+            if (pdfFileRu.exists()) {
+                totalSizeBytes += pdfFileRu.length();
+            }
+        }
+
+        if (totalSizeBytes > 0) {
+            double totalSizeMB = totalSizeBytes / (1024.0 * 1024.0);
+            String sizeText = String.format(Locale.getDefault(), "Размер: %.2f МБ", totalSizeMB);
+            bookSizeText.setText(sizeText);
+            bookSizeText.setVisibility(View.VISIBLE);
+        } else {
+            bookSizeText.setVisibility(View.GONE);
         }
     }
 
     /**
-     * Загружает книгу из Firebase и сохраняет локально.
+     * Загружает книгу из Firebase и сохраняет локально, показывая прогресс-бар.
      */
     private void downloadBook(Book book) {
         downloadProgressBar.setVisibility(View.VISIBLE);
@@ -190,16 +208,20 @@ public class BookDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String pdfUrlEn = dataSnapshot.child("pdfUrlEn").getValue(String.class); // Используем английскую версию
-                    if (pdfUrlEn != null) {
+                    String pdfUrlEn = dataSnapshot.child("pdfUrlEn").getValue(String.class);
+                    String pdfUrlRu = dataSnapshot.child("pdfUrlRu").getValue(String.class);
+                    if (pdfUrlEn != null && pdfUrlRu != null) {
                         executorService.execute(() -> {
                             try {
-                                String pdfPath = downloadFile(pdfUrlEn, book.getId() + "_en.pdf");
+                                // Загружаем оба PDF-файла
+                                String pdfPathEn = downloadFile(pdfUrlEn, book.getId() + "_en.pdf");
+                                String pdfPathRu = downloadFile(pdfUrlRu, book.getId() + "_ru.pdf");
 
                                 AppDatabase db = AppDatabase.getInstance(BookDetailsActivity.this);
                                 DownloadedBook downloadedBook = new DownloadedBook();
                                 downloadedBook.setBookId(book.getId());
-                                downloadedBook.setPdfPathEn(pdfPath); // Исправлено: используем setPdfPathEn
+                                downloadedBook.setPdfPathEn(pdfPathEn);
+                                downloadedBook.setPdfPathRu(pdfPathRu);
                                 db.downloadedBookDao().insert(downloadedBook);
                                 book.setDownloaded(true);
                                 db.bookDao().update(book);
@@ -207,7 +229,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                                 mainHandler.post(() -> {
                                     Toast.makeText(BookDetailsActivity.this, "Книга добавлена в библиотеку", Toast.LENGTH_SHORT).show();
                                     downloadProgressBar.setVisibility(View.GONE);
-                                    checkDownloadStatus(book); // Обновляем UI
+                                    checkDownloadStatus(book); // Обновляем UI, чтобы показать размер
                                 });
                             } catch (IOException e) {
                                 mainHandler.post(() -> {
@@ -245,26 +267,14 @@ public class BookDetailsActivity extends AppCompatActivity {
             book.setDownloaded(false);
             db.bookDao().update(book);
 
-            // Удаляем PDF-файл, используя getPdfPathEn
-            deletePdfFile(downloadedBook.getPdfPathEn()); // Исправлено: используем getPdfPathEn
+            deletePdfFile(downloadedBook.getPdfPathEn());
+            deletePdfFile(downloadedBook.getPdfPathRu());
 
             mainHandler.post(() -> {
                 Toast.makeText(this, "Книга удалена из библиотеки", Toast.LENGTH_SHORT).show();
                 checkDownloadStatus(book); // Обновляем UI
             });
         });
-    }
-
-    /**
-     * Удаляет PDF-файл по указанному пути.
-     */
-    private void deletePdfFile(String pdfPath) {
-        if (pdfPath != null) {
-            File file = new File(pdfPath);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
     }
 
     /**
@@ -286,6 +296,18 @@ public class BookDetailsActivity extends AppCompatActivity {
             response.body().close();
         }
         return file.getAbsolutePath();
+    }
+
+    /**
+     * Удаляет PDF-файл по указанному пути.
+     */
+    private void deletePdfFile(String pdfPath) {
+        if (pdfPath != null) {
+            File file = new File(pdfPath);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     /**

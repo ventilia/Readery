@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- header background -->
+    <!-- Фон заголовка -->
     <ImageView
         android:id="@+id/header_background"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- back button -->
+    <!-- Кнопка "Назад" -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="@id/header_background"
         android:layout_marginStart="16dp" />
 
-    <!-- header title -->
+    <!-- Заголовок -->
     <TextView
         android:fontFamily="@font/bookerly"
         android:id="@+id/header_title"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- scrollable content -->
+    <!-- ScrollView для контента -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -60,12 +60,14 @@
             android:gravity="center_horizontal"
             android:animateLayoutChanges="true">
 
+            <!-- ViewPager для изображений -->
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/image_pager"
                 android:layout_width="250dp"
                 android:layout_height="400dp"
                 android:layout_gravity="center_horizontal" />
 
+            <!-- Индикатор для ViewPager -->
             <me.relex.circleindicator.CircleIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
@@ -76,7 +78,7 @@
                 app:ci_drawable="@drawable/circle_selected"
                 app:ci_drawable_unselected="@drawable/circle_unselected" />
 
-            <!-- book title -->
+            <!-- Название книги -->
             <TextView
                 android:fontFamily="@font/bookerly"
                 android:id="@+id/book_title"
@@ -88,6 +90,7 @@
                 android:textColor="@color/black"
                 android:gravity="center" />
 
+            <!-- Автор книги -->
             <TextView
                 android:fontFamily="@font/bookerly"
                 android:id="@+id/book_author"
@@ -96,6 +99,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/gray" />
 
+            <!-- Описание книги -->
             <TextView
                 android:fontFamily="@font/bookerly"
                 android:id="@+id/book_description"
@@ -104,45 +108,28 @@
                 android:textSize="14sp"
                 android:textColor="@color/black" />
 
-            <!-- Кнопки и информация о размере -->
-            <LinearLayout
-                android:id="@+id/buttons_layout"
-                android:layout_width="match_parent"
+            <!-- Кнопка "Добавить в библиотеку" или "Читать" -->
+            <Button
+                android:id="@+id/add_to_library_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_background"
+                android:textColor="@android:color/black"
+                android:padding="12dp"
+                android:text="@string/add_to_library" />
 
-                <Button
-                    android:id="@+id/add_to_library_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_background"
-                    android:textColor="@android:color/black"
-                    android:padding="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/add_to_library" />
-
-                <Button
-                    android:id="@+id/delete_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_background"
-                    android:textColor="@android:color/black"
-                    android:padding="12dp"
-                    android:text="@string/delete"
-                    android:visibility="gone" />
-            </LinearLayout>
-
+            <!-- Текст с размером книги -->
             <TextView
                 android:id="@+id/book_size_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:visibility="gone" />
 
+            <!-- Прогресс-бар для загрузки -->
             <ProgressBar
                 android:id="@+id/download_progress_bar"
                 android:layout_width="match_parent"
@@ -151,6 +138,20 @@
                 android:visibility="gone"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:indeterminate="true" />
+
         </LinearLayout>
     </ScrollView>
+
+    <!-- Круглая кнопка "Удалить" с кремовым фоном -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:visibility="gone"
+        app:backgroundTint="@color/cream_background"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_margin="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
