@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,8 +58,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Используем новую разметку item_book.xml
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_book_library, parent, false);
+                .inflate(R.layout.item_book, parent, false);
         return new BookViewHolder(view);
     }
 
@@ -82,20 +82,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             holder.cover.setImageResource(R.drawable.default_cover);
         }
 
-        executorService.execute(() -> {
-            AppDatabase db = AppDatabase.getInstance(context);
-            DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
-            mainHandler.post(() -> {
-                if (downloadedBook != null) {
-                    holder.actionButton.setText("Читать");
-                    holder.actionButton.setOnClickListener(v -> listener.onBookClick(book));
-                } else {
-                    holder.actionButton.setText("Добавить");
-                    holder.actionButton.setOnClickListener(null);
-                }
-            });
-        });
-
+        // Обработчик кликов на всю карточку
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -125,14 +112,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         TextView title;
         TextView author;
         ImageView cover;
-        Button actionButton;
 
         BookViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.book_title);
             author = itemView.findViewById(R.id.book_author);
             cover = itemView.findViewById(R.id.book_cover);
-            actionButton = itemView.findViewById(R.id.action_button);
         }
     }
 }

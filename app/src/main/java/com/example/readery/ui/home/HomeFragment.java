@@ -47,23 +47,19 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }, requireContext());
 
-
         RecyclerView recyclerViewNew = root.findViewById(R.id.recycler_view_new);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerViewNew.setLayoutManager(gridLayoutManager);
         recyclerViewNew.setAdapter(newBooksAdapter);
 
-
         RecyclerView recyclerViewPopular = root.findViewById(R.id.recycler_view_popular);
         recyclerViewPopular.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewPopular.setAdapter(popularBooksAdapter);
 
-
         RecyclerView recyclerViewEditorsChoice = root.findViewById(R.id.recycler_view_editors_choice);
         recyclerViewEditorsChoice.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewEditorsChoice.setAdapter(editorsChoiceBooksAdapter);
-
 
         viewModel.getNewBooks().observe(getViewLifecycleOwner(), newBooksAdapter::setBooks);
         viewModel.getPopularBooks().observe(getViewLifecycleOwner(), popularBooksAdapter::setBooks);

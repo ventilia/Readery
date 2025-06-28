@@ -2,6 +2,8 @@ package com.example.readery.ui.library;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,9 @@ import com.example.readery.ui.PdfViewerActivity;
 import com.example.readery.ui.adapters.BookAdapter;
 import com.example.readery.viewmodel.LibraryViewModel;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Фрагмент для отображения списка загруженных книг в библиотеке.
  */
@@ -27,28 +32,32 @@ public class LibraryFragment extends Fragment {
     private RecyclerView recyclerView;
     private BookAdapter adapter;
     private LibraryViewModel viewModel;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_library, container, false);
 
-        // Инициализация RecyclerView
         recyclerView = root.findViewById(R.id.recycler_view_library);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Инициализация адаптера с обработчиком кликов
         adapter = new BookAdapter(book -> {
-            AppDatabase db = AppDatabase.getInstance(getContext());
-            DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
-            if (downloadedBook != null) {
-                Intent intent = new Intent(getActivity(), PdfViewerActivity.class);
-                intent.putExtra("pdfPath", downloadedBook.getPdfPath(getContext()));
-                startActivity(intent);
-            }
+            executorService.execute(() -> {
+                AppDatabase db = AppDatabase.getInstance(getContext());
+                DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
+                mainHandler.post(() -> {
+                    if (downloadedBook != null) {
+                        Intent intent = new Intent(getActivity(), PdfViewerActivity.class);
+                        intent.putExtra("pdfPath", downloadedBook.getPdfPath(getContext()));
+                        startActivity(intent);
+                    }
+                });
+            });
         }, requireContext());
+
         recyclerView.setAdapter(adapter);
 
-        // Инициализация ViewModel
         viewModel = new ViewModelProvider(this).get(LibraryViewModel.class);
         loadDownloadedBooks();
 
@@ -64,5 +73,11 @@ public class LibraryFragment extends Fragment {
                 adapter.setBooks(books);
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown();
     }
 }
