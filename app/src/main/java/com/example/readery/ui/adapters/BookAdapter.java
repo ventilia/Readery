@@ -33,9 +33,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private List<Book> books = new ArrayList<>();
     private OnBookClickListener listener;
     private Context context;
-    // пул потоков для выполнения запросов к базе данных
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    // handler для обновления UI на главном потоке
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     /**
@@ -45,21 +43,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         void onBookClick(Book book);
     }
 
-    /**
-     * Конструктор адаптера.
-     *
-     * @param listener обработчик кликов по книге
-     * @param context контекст приложения
-     */
     public BookAdapter(OnBookClickListener listener, Context context) {
         this.listener = listener;
         this.context = context;
     }
 
     /**
-     * Устанавливает список книг и обновляет адаптер.
-     *
-     * @param books список книг
+     * Устанавливает список книг для отображения.
      */
     public void setBooks(List<Book> books) {
         this.books = (books != null) ? books : new ArrayList<>();
@@ -69,7 +59,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // создание view для элемента списка
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_book_library, parent, false);
         return new BookViewHolder(view);
@@ -79,11 +68,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = books.get(position);
 
-        // установка названия и автора книги
         holder.title.setText(book.getTitle(context));
         holder.author.setText(book.getAuthor(context));
 
-        // загрузка обложки книги с помощью Glide
         String coverPath = book.getCoverImagePath(context);
         if (coverPath != null && !coverPath.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -91,25 +78,24 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                     .placeholder(R.drawable.default_cover)
                     .error(R.drawable.error_cover)
                     .into(holder.cover);
+        } else {
+            holder.cover.setImageResource(R.drawable.default_cover);
         }
 
-        // асинхронная проверка, загружена ли книга
         executorService.execute(() -> {
             AppDatabase db = AppDatabase.getInstance(context);
             DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
-            // обновление UI на главном потоке
             mainHandler.post(() -> {
                 if (downloadedBook != null) {
                     holder.actionButton.setText("Читать");
                     holder.actionButton.setOnClickListener(v -> listener.onBookClick(book));
                 } else {
                     holder.actionButton.setText("Добавить");
-                    holder.actionButton.setOnClickListener(null); // действие не требуется в библиотеке
+                    holder.actionButton.setOnClickListener(null);
                 }
             });
         });
 
-        // обработка касаний для анимации и кликов
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -129,7 +115,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     @Override
     public int getItemCount() {
-        return books != null ? books.size() : 0;
+        return books.size();
     }
 
     /**

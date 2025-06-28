@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,21 +18,25 @@ import com.example.readery.data.Book;
 import com.example.readery.data.DownloadedBook;
 import com.example.readery.ui.PdfViewerActivity;
 import com.example.readery.ui.adapters.BookAdapter;
+import com.example.readery.viewmodel.LibraryViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Фрагмент для отображения списка загруженных книг в библиотеке.
+ */
 public class LibraryFragment extends Fragment {
     private RecyclerView recyclerView;
     private BookAdapter adapter;
+    private LibraryViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_library, container, false);
 
+        // Инициализация RecyclerView
         recyclerView = root.findViewById(R.id.recycler_view_library);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Инициализация адаптера с обработчиком кликов
         adapter = new BookAdapter(book -> {
             AppDatabase db = AppDatabase.getInstance(getContext());
             DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
@@ -43,20 +48,19 @@ public class LibraryFragment extends Fragment {
         }, requireContext());
         recyclerView.setAdapter(adapter);
 
+        // Инициализация ViewModel
+        viewModel = new ViewModelProvider(this).get(LibraryViewModel.class);
         loadDownloadedBooks();
 
         return root;
     }
 
+    /**
+     * Загружает список загруженных книг и обновляет адаптер при изменении данных.
+     */
     private void loadDownloadedBooks() {
-        AppDatabase db = AppDatabase.getInstance(getContext());
-        db.downloadedBookDao().getAllDownloadedBooks().observe(getViewLifecycleOwner(), downloadedBooks -> {
-            if (downloadedBooks != null) {
-                List<Book> books = new ArrayList<>();
-                for (DownloadedBook dbBook : downloadedBooks) {
-                    Book book = db.bookDao().getBookById(dbBook.getBookId()).getValue();
-                    if (book != null) books.add(book);
-                }
+        viewModel.getDownloadedBooks().observe(getViewLifecycleOwner(), books -> {
+            if (books != null) {
                 adapter.setBooks(books);
             }
         });
