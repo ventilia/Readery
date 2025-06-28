@@ -33,11 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -222,6 +224,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                                 downloadedBook.setBookId(book.getId());
                                 downloadedBook.setPdfPathEn(pdfPathEn);
                                 downloadedBook.setPdfPathRu(pdfPathRu);
+                                // Вставляем или обновляем запись (используем @Insert(onConflict = REPLACE))
                                 db.downloadedBookDao().insert(downloadedBook);
                                 book.setDownloaded(true);
                                 db.bookDao().update(book);
@@ -277,11 +280,13 @@ public class BookDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Загружает PDF-файл по URL и сохраняет его локально.
-     */
     private String downloadFile(String url, String fileName) throws IOException {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS) // Тайм-аут соединения
+                .readTimeout(60, TimeUnit.SECONDS)    // Тайм-аут чтения
+                .writeTimeout(60, TimeUnit.SECONDS)   // Тайм-аут записи
+                .build();
+
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
 
@@ -290,17 +295,20 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
 
         File file = new File(getFilesDir(), fileName);
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(response.body().bytes());
+        try (FileOutputStream fos = new FileOutputStream(file);
+             InputStream is = response.body().byteStream()) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
         } finally {
             response.body().close();
         }
         return file.getAbsolutePath();
     }
 
-    /**
-     * Удаляет PDF-файл по указанному пути.
-     */
+
     private void deletePdfFile(String pdfPath) {
         if (pdfPath != null) {
             File file = new File(pdfPath);
@@ -310,9 +318,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Открывает PDF-файл в PdfViewerActivity.
-     */
+
     private void openPdf(String pdfPath) {
         if (pdfPath != null && !pdfPath.isEmpty()) {
             Intent intent = new Intent(this, PdfViewerActivity.class);

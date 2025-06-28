@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -14,11 +15,12 @@ import java.util.List;
 @Dao
 public interface DownloadedBookDao {
     /**
-     * Вставляет запись о скачанной книге в базу данных.
+     * Вставляет или обновляет запись о скачанной книге в базе данных.
+     * Если запись с таким bookId уже существует, она будет заменена.
      *
      * @param downloadedBook объект скачанной книги
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(DownloadedBook downloadedBook);
 
     /**
@@ -44,5 +46,5 @@ public interface DownloadedBookDao {
      * @param downloadedBook объект скачанной книги для удаления
      */
     @Delete
-    void delete(DownloadedBook downloadedBook); // Добавлен метод delete
+    void delete(DownloadedBook downloadedBook);
 }
