@@ -31,6 +31,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -70,9 +73,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
     // pdf viewer с исключением старой библиотеки поддержки
-    implementation("com.github.barteksc:AndroidPdfViewerV1:1.6.0") {
-        exclude(group = "com.android.support", module = "support-v4")
-    }
+    implementation(libs.android.pdf.viewer)
+
 
 
     // тесты
