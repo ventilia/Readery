@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 /**
  * абстрактный класс базы данных Room для приложения Reader
  */
-@Database(entities = {Book.class, Tag.class, BookTag.class, DownloadedBook.class}, version = 7, exportSchema = false)
+@Database(entities = {Book.class, Tag.class, BookTag.class, DownloadedBook.class}, version = 8, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract BookDao bookDao();

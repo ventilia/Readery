@@ -104,15 +104,44 @@
                 android:textSize="14sp"
                 android:textColor="@color/black" />
 
-            <Button
-                android:id="@+id/add_to_library_button"
+            <!-- Кнопки и информация о размере -->
+            <LinearLayout
+                android:id="@+id/buttons_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/add_to_library_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/black"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/add_to_library" />
+
+                <Button
+                    android:id="@+id/delete_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/black"
+                    android:padding="12dp"
+                    android:text="@string/delete"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/book_size_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/button_background"
-                android:textColor="@android:color/white"
-                android:padding="12dp"
-                android:text="@string/add_to_library" />
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/download_progress_bar"
@@ -120,7 +149,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
-                style="?android:attr/progressBarStyleHorizontal" />
+                style="?android:attr/progressBarStyleHorizontal"
+                android:indeterminate="true" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

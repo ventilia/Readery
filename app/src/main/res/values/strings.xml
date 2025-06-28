@@ -20,6 +20,9 @@
     <string name="github_description">Contribute to the project</string>
     <string name="add_to_library">Add to Library</string>
     <string name="read">Read</string>
+    <string name="delete">delete</string>
+
+    <string name="book_size">Размер: %.2f МБ</string>
     <string-array name="filter_types">
         <item>Title</item>
         <item>Author</item>
