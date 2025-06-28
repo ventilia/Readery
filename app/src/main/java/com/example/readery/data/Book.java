@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey;
 import java.util.List;
 
 /**
- * Сущность для хранения данных о книге в базе данных Room.
+ * Сущность для хранения данных о книге в базе данных Room
  */
 @Entity(tableName = "books")
 public class Book {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey // Убираем autoGenerate, чтобы ID задавался вручную
     private long id;
     private String titleEn;
     private String titleRu;
@@ -60,7 +60,7 @@ public class Book {
     public boolean isDownloaded() { return isDownloaded; }
     public void setDownloaded(boolean isDownloaded) { this.isDownloaded = isDownloaded; }
 
-    // Методы для получения локализованных данных в зависимости от языка устройства
+    // Методы для получения локализованных данных
     public String getTitle(Context context) {
         String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
         return "ru".equals(lang) ? titleRu : titleEn;

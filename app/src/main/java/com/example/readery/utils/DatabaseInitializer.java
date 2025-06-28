@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 /**
- * Класс для инициализации базы данных тестовыми данными.
+ * Класс для инициализации базы данных тестовыми данными
  */
 public class DatabaseInitializer {
 
     /**
-     * Заполняет базу данных тестовыми книгами и тегами, если она пуста.
+     * Заполняет базу данных тестовыми книгами и тегами, если она пуста
      *
-     * @param context Контекст приложения.
+     * @param context контекст приложения
      */
     public static void populateDatabase(Context context) {
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -27,17 +27,15 @@ public class DatabaseInitializer {
                 Tag newTag = new Tag("New");
                 long newTagId = db.tagDao().insert(newTag);
 
-                // Только одна книга для теста
+                // Книга с id 1, соответствующим Firebase
                 Book b3 = new Book();
-                b3.setId(1); // Явно задаем ID 1
+                b3.setId(1); // Явно задаем id 1
                 b3.setTitleEn("1984");
                 b3.setTitleRu("1984");
                 b3.setAuthorEn("George Orwell");
                 b3.setAuthorRu("Джордж Оруэлл");
                 b3.setDescriptionEn("A dystopian novel about a totalitarian society.");
                 b3.setDescriptionRu("Дистопический роман о тоталитарном обществе.");
-                // b3.setPdfPathEn("books/1984/book_en.pdf"); // Закомментировано, как в вашем коде
-                // b3.setPdfPathRu("books/1984/book_ru.pdf"); // Закомментировано, как в вашем коде
                 b3.setCoverImagePathEn("books/1984/cover_low_res_en.jpg");
                 b3.setCoverImagePathRu("books/1984/cover_low_res_ru.jpg");
                 b3.setHighResCoverImagePathEn("books/1984/cover_high_res_en.jpg");
@@ -50,8 +48,8 @@ public class DatabaseInitializer {
                         "books/1984/additional1_ru.jpg",
                         "books/1984/additional2_ru.jpg"
                 ));
-                long id3 = db.bookDao().insert(b3); // Вставляем книгу
-                db.bookTagDao().insert(new BookTag(id3, newTagId)); // Связываем книгу с тегом
+                db.bookDao().insert(b3); // Вставляем книгу с id 1
+                db.bookTagDao().insert(new BookTag(1, newTagId)); // Связываем книгу с тегом
             }
         });
     }
