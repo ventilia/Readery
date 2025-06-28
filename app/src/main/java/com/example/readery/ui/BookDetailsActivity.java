@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,9 +48,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * активность для отображения детальной информации о книге
+ * Активность для отображения деталей книги и управления загрузкой.
  */
 public class BookDetailsActivity extends AppCompatActivity {
+    private static final String TAG = "BookDetailsActivity";
     private BookDetailsViewModel viewModel;
     private ProgressBar downloadProgressBar;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -60,42 +62,50 @@ public class BookDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        // скрываем action bar
+        // Скрываем ActionBar
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        // получаем id книги из intent
+        // Извлекаем ID книги из Intent
         long bookId = getIntent().getLongExtra("bookId", -1);
         if (bookId == -1) {
+            Log.e(TAG, "Не передан ID книги в Intent");
+            Toast.makeText(this, "Ошибка: ID книги не передан", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // инициализируем viewmodel
+        Log.d(TAG, "Получен ID книги из Intent: " + bookId);
+
+        // Инициализируем ViewModel
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
         downloadProgressBar = findViewById(R.id.download_progress_bar);
         Button addToLibraryButton = findViewById(R.id.add_to_library_button);
 
-        // наблюдаем за данными книги
+        // Подписываемся на данные книги из локальной базы
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
-                // заполняем ui данными книги
+                Log.d(TAG, "Книга с ID " + book.getId() + " найдена в локальной базе");
                 setupBookDetails(book);
-
-                // проверяем статус загрузки книги асинхронно
                 checkDownloadStatus(book, addToLibraryButton);
+            } else {
+                Log.e(TAG, "Книга с ID " + bookId + " не найдена в локальной базе");
+                Toast.makeText(this, "Книга не найдена в локальной базе", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
-        // настройка кнопки "назад"
+        // Настраиваем кнопку "Назад"
         ImageView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
     }
 
-    // настройка ui с данными книги
+    /**
+     * Заполняем UI данными книги.
+     */
     private void setupBookDetails(Book book) {
         TextView headerTitle = findViewById(R.id.header_title);
         headerTitle.setText(book.getTitle(this));
@@ -127,15 +137,17 @@ public class BookDetailsActivity extends AppCompatActivity {
         indicator.setViewPager(imagePager);
     }
 
-    // асинхронная проверка, загружена ли книга
+    /**
+     * Проверяем, загружена ли книга, и настраиваем кнопку.
+     */
     private void checkDownloadStatus(Book book, Button addToLibraryButton) {
         executorService.execute(() -> {
-            AppDatabase db = AppDatabase.getInstance(BookDetailsActivity.this);
+            AppDatabase db = AppDatabase.getInstance(this);
             DownloadedBook downloadedBook = db.downloadedBookDao().getDownloadedBookById(book.getId());
             mainHandler.post(() -> {
                 if (downloadedBook != null) {
                     addToLibraryButton.setText("Читать");
-                    addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(BookDetailsActivity.this)));
+                    addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(this)));
                 } else {
                     addToLibraryButton.setText("Добавить в библиотеку");
                     addToLibraryButton.setOnClickListener(v -> downloadBook(book));
@@ -144,52 +156,71 @@ public class BookDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // загрузка книги
+    /**
+     * Загружаем книгу из Firebase.
+     */
     private void downloadBook(Book book) {
         downloadProgressBar.setVisibility(View.VISIBLE);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("books").child(String.valueOf(book.getId()));
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://readery-373e8-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = database.getReference("books").child(String.valueOf(book.getId()));
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String pdfUrlEn = dataSnapshot.child("pdfUrlEn").getValue(String.class);
-                String pdfUrlRu = dataSnapshot.child("pdfUrlRu").getValue(String.class);
+                if (dataSnapshot.exists()) {
+                    String pdfUrlEn = dataSnapshot.child("pdfUrlEn").getValue(String.class);
+                    String pdfUrlRu = dataSnapshot.child("pdfUrlRu").getValue(String.class);
+                    Log.d(TAG, "pdfUrlEn: " + pdfUrlEn);
+                    Log.d(TAG, "pdfUrlRu: " + pdfUrlRu);
 
-                if (pdfUrlEn != null && pdfUrlRu != null) {
-                    executorService.execute(() -> {
-                        try {
-                            String pdfPathEn = downloadFile(pdfUrlEn, book.getId() + "_en.pdf");
-                            String pdfPathRu = downloadFile(pdfUrlRu, book.getId() + "_ru.pdf");
+                    if (pdfUrlEn != null && pdfUrlRu != null) {
+                        executorService.execute(() -> {
+                            try {
+                                String pdfPathEn = downloadFile(pdfUrlEn, book.getId() + "_en.pdf");
+                                String pdfPathRu = downloadFile(pdfUrlRu, book.getId() + "_ru.pdf");
 
-                            // вставка записи в базу данных в фоновом потоке
-                            AppDatabase db = AppDatabase.getInstance(BookDetailsActivity.this);
-                            DownloadedBook downloadedBook = new DownloadedBook();
-                            downloadedBook.setBookId(book.getId());
-                            downloadedBook.setPdfPathEn(pdfPathEn);
-                            downloadedBook.setPdfPathRu(pdfPathRu);
-                            db.downloadedBookDao().insert(downloadedBook);
-                            book.setDownloaded(true);
-                            db.bookDao().insert(book);
+                                AppDatabase db = AppDatabase.getInstance(BookDetailsActivity.this);
+                                DownloadedBook downloadedBook = new DownloadedBook();
+                                downloadedBook.setBookId(book.getId());
+                                downloadedBook.setPdfPathEn(pdfPathEn);
+                                downloadedBook.setPdfPathRu(pdfPathRu);
+                                db.downloadedBookDao().insert(downloadedBook);
+                                book.setDownloaded(true);
+                                db.bookDao().update(book);
 
-                            // обновление ui на главном потоке
-                            mainHandler.post(() -> {
-                                Toast.makeText(BookDetailsActivity.this, "Книга добавлена в библиотеку", Toast.LENGTH_SHORT).show();
-                                downloadProgressBar.setVisibility(View.GONE);
-                                Button addToLibraryButton = findViewById(R.id.add_to_library_button);
-                                addToLibraryButton.setText("Читать");
-                                addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(BookDetailsActivity.this)));
-                            });
-                        } catch (IOException e) {
-                            mainHandler.post(() -> {
-                                Toast.makeText(BookDetailsActivity.this, "Ошибка загрузки: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                downloadProgressBar.setVisibility(View.GONE);
-                            });
-                        }
+                                mainHandler.post(() -> {
+                                    Toast.makeText(BookDetailsActivity.this, "Книга добавлена в библиотеку", Toast.LENGTH_SHORT).show();
+                                    downloadProgressBar.setVisibility(View.GONE);
+                                    Button addToLibraryButton = findViewById(R.id.add_to_library_button);
+                                    addToLibraryButton.setText("Читать");
+                                    addToLibraryButton.setOnClickListener(v -> openPdf(downloadedBook.getPdfPath(BookDetailsActivity.this)));
+                                });
+                            } catch (IOException e) {
+                                Log.e(TAG, "Ошибка загрузки: " + e.getMessage());
+                                mainHandler.post(() -> {
+                                    Toast.makeText(BookDetailsActivity.this, "Ошибка загрузки: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    downloadProgressBar.setVisibility(View.GONE);
+                                });
+                            }
+                        });
+                    } else {
+                        mainHandler.post(() -> {
+                            Toast.makeText(BookDetailsActivity.this, "URL PDF не найдены", Toast.LENGTH_LONG).show();
+                            downloadProgressBar.setVisibility(View.GONE);
+                        });
+                    }
+                } else {
+                    mainHandler.post(() -> {
+                        Toast.makeText(BookDetailsActivity.this, "Книга с ID " + book.getId() + " не найдена в Firebase", Toast.LENGTH_LONG).show();
+                        downloadProgressBar.setVisibility(View.GONE);
                     });
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "Ошибка Firebase: " + databaseError.getMessage());
                 mainHandler.post(() -> {
                     Toast.makeText(BookDetailsActivity.this, "Ошибка Firebase: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
                     downloadProgressBar.setVisibility(View.GONE);
@@ -198,40 +229,51 @@ public class BookDetailsActivity extends AppCompatActivity {
         });
     }
 
-    // скачивание файла
+    /**
+     * Загружаем PDF-файл по URL и сохраняем локально.
+     */
     private String downloadFile(String url, String fileName) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
 
-        if (!response.isSuccessful()) throw new IOException("Ошибка: " + response);
+        if (!response.isSuccessful()) {
+            throw new IOException("Ошибка HTTP: " + response.code());
+        }
 
         File file = new File(getFilesDir(), fileName);
-        FileOutputStream fos = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        long totalBytesRead = 0;
-        long totalBytes = response.body().contentLength();
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            long totalBytesRead = 0;
+            long totalBytes = response.body().contentLength();
 
-        while ((bytesRead = response.body().byteStream().read(buffer)) != -1) {
-            fos.write(buffer, 0, bytesRead);
-            totalBytesRead += bytesRead;
-            int progress = (int) (totalBytesRead * 100 / totalBytes);
-            mainHandler.post(() -> downloadProgressBar.setProgress(progress));
+            while ((bytesRead = response.body().byteStream().read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+                totalBytesRead += bytesRead;
+                if (totalBytes > 0) {
+                    int progress = (int) (totalBytesRead * 100 / totalBytes);
+                    mainHandler.post(() -> downloadProgressBar.setProgress(progress));
+                }
+            }
+        } finally {
+            response.body().close();
         }
-        fos.close();
-        response.body().close();
         return file.getAbsolutePath();
     }
 
-    // открытие pdf
+    /**
+     * Открываем PDF-файл.
+     */
     private void openPdf(String pdfPath) {
         Intent intent = new Intent(this, PdfViewerActivity.class);
         intent.putExtra("pdfPath", pdfPath);
         startActivity(intent);
     }
 
-    // настройка описания с возможностью сворачивания
+    /**
+     * Настраиваем описание с возможностью сворачивания.
+     */
     private void setupDescription(TextView descriptionView, String fullDescription) {
         String[] words = fullDescription.split("\\s+");
         if (words.length > 25) {
@@ -275,5 +317,11 @@ public class BookDetailsActivity extends AppCompatActivity {
         config.setLocale(locale);
         base = base.createConfigurationContext(config);
         super.attachBaseContext(base);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown();
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -34,6 +35,9 @@ public interface BookDao {
 
     @Insert
     long insert(Book book);
+
+    @Update
+    int update(Book book);
 
     @Query("SELECT COUNT(*) FROM books")
     int getBookCount();
