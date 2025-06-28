@@ -46,9 +46,9 @@ public class HomeFragment extends Fragment {
             intent.putExtra("bookId", book.getId());
             startActivity(intent);
         }, requireContext());
-
+//менять  грид тут
         RecyclerView recyclerViewNew = root.findViewById(R.id.recycler_view_new);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
         gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerViewNew.setLayoutManager(gridLayoutManager);
         recyclerViewNew.setAdapter(newBooksAdapter);
