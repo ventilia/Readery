@@ -24,6 +24,8 @@
     <string name="book_size">Size: %.2f MB</string>
     <string name="expand">more</string>
     <string name="collapse">less</string>
+    <string name="book_added_to_library">Book added to library</string>
+    <string name="pdf_not_found">PDF file not found for current language</string>
     <string-array name="filter_types">
         <item>Title</item>
         <item>Author</item>

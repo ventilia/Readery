@@ -24,6 +24,8 @@
     <string name="book_size">Размер: %.2f МБ</string>
     <string name="expand">развернуть</string>
     <string name="collapse">скрыть</string>
+    <string name="book_added_to_library">Книга добавлена в библиотеку</string>
+    <string name="pdf_not_found">PDF-файл не найден для текущего языка</string>
     <string-array name="filter_types">
         <item>Название</item>
         <item>Автор</item>
