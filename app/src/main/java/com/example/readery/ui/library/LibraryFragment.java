@@ -25,9 +25,7 @@ import com.example.readery.viewmodel.LibraryViewModel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Фрагмент для отображения списка загруженных книг в библиотеке.
- */
+
 public class LibraryFragment extends Fragment {
     private RecyclerView recyclerView;
     private BookAdapter adapter;
@@ -64,9 +62,7 @@ public class LibraryFragment extends Fragment {
         return root;
     }
 
-    /**
-     * Загружает список загруженных книг и обновляет адаптер при изменении данных.
-     */
+
     private void loadDownloadedBooks() {
         viewModel.getDownloadedBooks().observe(getViewLifecycleOwner(), books -> {
             if (books != null) {

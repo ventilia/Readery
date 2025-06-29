@@ -45,9 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Активность для отображения деталей книги и управления загрузкой/чтением/удалением.
- */
+
 public class BookDetailsActivity extends AppCompatActivity {
     private static final String TAG = "BookDetailsActivity";
     private BookDetailsViewModel viewModel;
@@ -80,13 +78,13 @@ public class BookDetailsActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         viewModel.setBookId(bookId);
 
-        // Инициализация UI-элементов
+
         downloadProgressBar = findViewById(R.id.download_progress_bar);
         bookSizeText = findViewById(R.id.book_size_text);
         addToLibraryButton = findViewById(R.id.add_to_library_button);
         deleteButton = findViewById(R.id.delete_button);
 
-        // Наблюдение за данными книги
+
         viewModel.getBook().observe(this, book -> {
             if (book != null) {
                 Log.d(TAG, "Книга с ID " + book.getId() + " найдена в локальной базе");
@@ -103,9 +101,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
 
-    /**
-     * Настраивает UI с данными книги.
-     */
+
     private void setupBookDetails(Book book) {
         TextView headerTitle = findViewById(R.id.header_title);
         headerTitle.setText(book.getTitle(this));
@@ -137,9 +133,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         indicator.setViewPager(imagePager);
     }
 
-    /**
-     * Проверяет статус загрузки книги и настраивает кнопки и информацию о размере.
-     */
+
     private void checkDownloadStatus(Book book) {
         executorService.execute(() -> {
             AppDatabase db = AppDatabase.getInstance(this);
@@ -163,9 +157,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Отображает общий размер двух PDF-файлов (английского и русского).
-     */
+
     private void showBookSize(DownloadedBook downloadedBook) {
         long totalSizeBytes = 0;
 
@@ -197,9 +189,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Загружает книгу из Firebase и сохраняет локально, показывая прогресс-бар.
-     */
+
     private void downloadBook(Book book) {
         downloadProgressBar.setVisibility(View.VISIBLE);
 
@@ -260,9 +250,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Удаляет книгу из локальной базы данных и файловой системы.
-     */
+
     private void deleteBook(Book book, DownloadedBook downloadedBook) {
         executorService.execute(() -> {
             AppDatabase db = AppDatabase.getInstance(this);

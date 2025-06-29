@@ -6,9 +6,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-/**
- * абстрактный класс базы данных Room для приложения Reader
- */
 @Database(entities = {Book.class, Tag.class, BookTag.class, DownloadedBook.class}, version = 9, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -19,17 +16,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
-    /**
-     * получение экземпляра базы данных
-     *
-     * @param context контекст приложения
-     * @return экземпляр базы данных
-     */
+
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "readery-database")
-                    .fallbackToDestructiveMigration() // очищает базу данных при изменении версии
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return instance;

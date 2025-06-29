@@ -6,12 +6,10 @@ import androidx.room.PrimaryKey;
 
 import java.util.List;
 
-/**
- * Сущность для хранения данных о книге в базе данных Room
- */
+
 @Entity(tableName = "books")
 public class Book {
-    @PrimaryKey // Убираем autoGenerate, чтобы ID задавался вручную
+    @PrimaryKey
     private long id;
     private String titleEn;
     private String titleRu;
@@ -25,12 +23,11 @@ public class Book {
     private String highResCoverImagePathRu;
     private List<String> additionalImagesEn;
     private List<String> additionalImagesRu;
-    private boolean isDownloaded; // Флаг, указывающий, загружена ли книга
+    private boolean isDownloaded;
 
-    // Конструктор по умолчанию, необходимый для Room
     public Book() {}
 
-    // Геттеры и сеттеры для всех полей
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
     public String getTitleEn() { return titleEn; }
@@ -60,7 +57,7 @@ public class Book {
     public boolean isDownloaded() { return isDownloaded; }
     public void setDownloaded(boolean isDownloaded) { this.isDownloaded = isDownloaded; }
 
-    // Методы для получения локализованных данных
+
     public String getTitle(Context context) {
         String lang = context.getResources().getConfiguration().getLocales().get(0).getLanguage();
         return "ru".equals(lang) ? titleRu : titleEn;

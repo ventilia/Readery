@@ -25,9 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Адаптер для отображения списка книг в RecyclerView.
- */
+
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private List<Book> books = new ArrayList<>();
     private OnBookClickListener listener;
@@ -82,7 +80,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             holder.cover.setImageResource(R.drawable.default_cover);
         }
 
-        // Обработчик кликов на всю карточку
+
         holder.itemView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
