@@ -80,9 +80,12 @@ public class AllBooksFragment extends Fragment {
         return root;
     }
 
+    /**
+     * показывает диалог фильтрации с локализованным заголовком
+     */
     private void showFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Фильтр");
+        builder.setTitle(R.string.filter_books);
 
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_filter, null);
         builder.setView(dialogView);
@@ -93,8 +96,8 @@ public class AllBooksFragment extends Fragment {
         builder.setPositiveButton("Применить", (dialog, which) -> {
             String filterType = filterTypeSpinner.getSelectedItem().toString();
             String filterOrder = filterOrderSpinner.getSelectedItem().toString();
-            currentFilterType = filterType.equals("Название") ? "title" : "author";
-            currentFilterOrder = filterOrder.equals("А-Я") ? "ASC" : "DESC";
+            currentFilterType = filterType.equals("Название") || filterType.equals("Title") ? "title" : "author";
+            currentFilterOrder = filterOrder.equals("А-Я") || filterOrder.equals("A-Z") ? "ASC" : "DESC";
             viewModel.setFilter(currentFilterType, currentFilterOrder);
         });
 

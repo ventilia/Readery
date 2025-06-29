@@ -26,6 +26,8 @@
     <string name="collapse">скрыть</string>
     <string name="book_added_to_library">Книга добавлена в библиотеку</string>
     <string name="pdf_not_found">PDF-файл не найден для текущего языка</string>
+    <string name="filter_type_title">Тип фильтрации</string>
+    <string name="filter_order_title">Порядок</string>
     <string-array name="filter_types">
         <item>Название</item>
         <item>Автор</item>

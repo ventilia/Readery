@@ -9,7 +9,7 @@
         android:fontFamily="@font/bookerly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Тип фильтрации" />
+        android:text="@string/filter_type_title" />
 
     <Spinner
         android:fontFamily="@font/bookerly"
@@ -22,7 +22,7 @@
         android:fontFamily="@font/bookerly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Порядок" />
+        android:text="@string/filter_order_title" />
 
     <Spinner
         android:fontFamily="@font/bookerly"

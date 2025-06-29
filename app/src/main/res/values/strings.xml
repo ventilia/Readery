@@ -26,6 +26,8 @@
     <string name="collapse">less</string>
     <string name="book_added_to_library">Book added to library</string>
     <string name="pdf_not_found">PDF file not found for current language</string>
+    <string name="filter_type_title">Filter Type</string>
+    <string name="filter_order_title">Order</string>
     <string-array name="filter_types">
         <item>Title</item>
         <item>Author</item>
