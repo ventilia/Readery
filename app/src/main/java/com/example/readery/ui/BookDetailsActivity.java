@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -56,6 +57,12 @@ public class BookDetailsActivity extends AppCompatActivity {
     private ProgressBar downloadProgressBar;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler mainHandler = new Handler(Looper.getMainLooper());
+    // Настроенный OkHttpClient с увеличенными тайм-аутами
+    private OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS) // Тайм-аут соединения
+            .readTimeout(60, TimeUnit.SECONDS)    // Тайм-аут чтения
+            .writeTimeout(60, TimeUnit.SECONDS)   // Тайм-аут записи
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +198,11 @@ public class BookDetailsActivity extends AppCompatActivity {
                                 });
                             } catch (IOException e) {
                                 mainHandler.post(() -> {
-                                    Toast.makeText(BookDetailsActivity.this, "Ошибка загрузки: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    String errorMessage = e.getMessage();
+                                    if (errorMessage != null && errorMessage.contains("timeout")) {
+                                        errorMessage = "Превышено время ожидания. Попробуйте еще раз или проверьте подключение к интернету.";
+                                    }
+                                    Toast.makeText(BookDetailsActivity.this, "Ошибка загрузки: " + errorMessage, Toast.LENGTH_LONG).show();
                                     downloadProgressBar.setVisibility(View.GONE);
                                 });
                             }
@@ -224,9 +235,8 @@ public class BookDetailsActivity extends AppCompatActivity {
      * Загружает PDF-файл по URL и сохраняет его локально.
      */
     private String downloadFile(String url, String fileName) throws IOException {
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
-        Response response = client.newCall(request).execute();
+        Response response = okHttpClient.newCall(request).execute();
 
         if (!response.isSuccessful()) {
             throw new IOException("Ошибка HTTP: " + response.code());
