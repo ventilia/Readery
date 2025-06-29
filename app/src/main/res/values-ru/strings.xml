@@ -22,6 +22,8 @@
     <string name="read">Читать</string>
     <string name="delete">Удалить</string>
     <string name="book_size">Размер: %.2f МБ</string>
+    <string name="expand">развернуть</string>
+    <string name="collapse">скрыть</string>
     <string-array name="filter_types">
         <item>Название</item>
         <item>Автор</item>
@@ -29,6 +31,5 @@
     <string-array name="filter_orders">
         <item>А-Я</item>
         <item>Я-А</item>
-
     </string-array>
 </resources>
